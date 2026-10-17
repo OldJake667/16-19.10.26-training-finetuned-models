@@ -1,0 +1,28 @@
+{
+  "package": "RDN data identity reused from scratch experiment",
+  "records": 111000,
+  "split": {
+    "train": 97200,
+    "validation": 10800,
+    "test": 3000
+  },
+  "target": "compact response first argmax >= 83",
+  "files": {
+    "data/full_manifest.csv": {
+      "bytes": 12503077,
+      "sha256": "8b70f0ba4d746e9f504dd89ee03984602f725bfa9e3f359a1e82b46a9f2b0652"
+    },
+    "data/images.npy": {
+      "bytes": 28416128,
+      "sha256": "4d9705401d6c2ca8c62da145506d5c2839c8a7285afd098b9c2fd575510df4da"
+    },
+    "data/labels.npy": {
+      "bytes": 888128,
+      "sha256": "8f58d927ca4199d703f6e8ada05597a86c50d86126c40ff94e878f7e58239638"
+    },
+    "data/spectra.npy": {
+      "bytes": 56832128,
+      "sha256": "87168b2152ee172511a28da89648dec7366dece8e03310f91324a690819f62c9"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+results/
+weights/
+pretrained/
+data/
+feature_cache/
+*.pt
+*.pth
+*.safetensors
+.env

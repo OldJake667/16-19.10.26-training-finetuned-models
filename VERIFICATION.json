@@ -1,0 +1,98 @@
+{
+  "python": "3.9.6",
+  "torch": "2.8.0",
+  "timm": "1.0.20",
+  "device": "CPU",
+  "gpu_verified": false,
+  "research_training_executed": false,
+  "dataset_model_inference_executed": false,
+  "architectures": {
+    "cnn_resnet18": {
+      "total_parameters": 11177538,
+      "trainable_parameters": 11177538,
+      "created_on_meta_without_weights": true
+    },
+    "vit_tiny": {
+      "total_parameters": 5426498,
+      "trainable_parameters": 5426498,
+      "created_on_meta_without_weights": true
+    },
+    "resnet50": {
+      "total_parameters": 23512130,
+      "trainable_parameters": 23512130,
+      "created_on_meta_without_weights": true
+    },
+    "resnet101": {
+      "total_parameters": 42504258,
+      "trainable_parameters": 42504258,
+      "created_on_meta_without_weights": true
+    },
+    "resnet152": {
+      "total_parameters": 58147906,
+      "trainable_parameters": 58147906,
+      "created_on_meta_without_weights": true
+    },
+    "vit_small": {
+      "total_parameters": 21666434,
+      "trainable_parameters": 21666434,
+      "created_on_meta_without_weights": true
+    },
+    "vit_base": {
+      "total_parameters": 85800194,
+      "trainable_parameters": 85800194,
+      "created_on_meta_without_weights": true
+    },
+    "vit_large": {
+      "total_parameters": 303303682,
+      "trainable_parameters": 303303682,
+      "created_on_meta_without_weights": true
+    },
+    "dinov2": {
+      "total_parameters": 21629570,
+      "trainable_parameters": 21629570,
+      "created_on_meta_without_weights": true
+    },
+    "vmamba": {
+      "total_parameters": 29481602,
+      "trainable_parameters": 29481602,
+      "created_on_meta_without_weights": true
+    },
+    "cnn": {
+      "total_parameters": 14838658,
+      "trainable_parameters": 14838658,
+      "created_on_meta_without_weights": true
+    }
+  },
+  "verified_split": {
+    "train": 97200,
+    "validation": 10800,
+    "test": 3000
+  },
+  "verified_data_sha256": {
+    "data/images.npy": "4d9705401d6c2ca8c62da145506d5c2839c8a7285afd098b9c2fd575510df4da",
+    "data/labels.npy": "8f58d927ca4199d703f6e8ada05597a86c50d86126c40ff94e878f7e58239638",
+    "data/spectra.npy": "87168b2152ee172511a28da89648dec7366dece8e03310f91324a690819f62c9",
+    "data/full_manifest.csv": "8b70f0ba4d746e9f504dd89ee03984602f725bfa9e3f359a1e82b46a9f2b0652",
+    "target": "compact_response_argmax_ge_83_first_maximum"
+  },
+  "all_preprocessing_shapes_checked": true,
+  "limitations": [
+    "CUDA hardware and selective-scan forward/backward require lab preflight",
+    "No full-data or subset research training or held-out evaluation performed",
+    "Recipes and physical batches need validation on the target GPU"
+  ],
+  "synthetic_unit_tests": {
+    "passed": true,
+    "tests": 8,
+    "checks": [
+      "partial-window sample-weighted gradient accumulation",
+      "clean notebook compilation",
+      "strict source checkpoint loading",
+      "published pretrained model registry entries",
+      "complete optimizer parameter grouping",
+      "exact interrupted/resumed synthetic weights",
+      "one-class prediction diagnostics",
+      "ViT-Tiny grayscale/RGB weight-transfer equivalence"
+    ]
+  }
+}
