@@ -113,8 +113,11 @@ def load_full_data(root):
     """Validate the exact packaged data, fixed target, and full split; no model evaluation."""
     root = Path(root)
     provenance = json.loads((root / "PACKAGE_MANIFEST.json").read_text(encoding="utf-8"))
+    pinned = json.loads((Path(__file__).resolve().parents[1] / "PACKAGE_MANIFEST.json").read_text())
     for name in ("data/images.npy", "data/labels.npy", "data/spectra.npy",
                  "data/full_manifest.csv"):
+        if provenance["files"][name]["sha256"] != pinned["files"][name]["sha256"]:
+            raise ValueError(f"Data identity differs from the fixed scratch baseline: {name}")
         actual = sha256_file(root / name)
         if actual != provenance["files"][name]["sha256"]:
             raise ValueError(f"File differs from the supplied full release: {name}")
