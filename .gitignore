@@ -18,3 +18,8 @@ feature_cache/
 .cache/
 .local_config.json
 *.log
+
+# Old names may be re-created by an already-open Jupyter tab during autosave.
+/standalone_notebooks/*.ipynb
+!/standalone_notebooks/*_finetuned.ipynb
+!/standalone_notebooks/00_environment_and_data_check.ipynb

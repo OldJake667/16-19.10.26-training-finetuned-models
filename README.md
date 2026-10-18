@@ -35,7 +35,7 @@ cd /home/murat/Desktop/fine_tuned_models
 ./start_jupyter.sh
 ```
 
-The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `standalone_notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `standalone_notebooks/00_environment_and_data_check.ipynb`, then one of the nine model notebooks in that folder. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
+The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `standalone_notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `standalone_notebooks/00_environment_and_data_check.ipynb`, then one of the nine model notebooks in that folder. Every model filename ends in `_finetuned.ipynb`, for example `02_vit_tiny_finetuned.ipynb`. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
 
 For another computer, activate a compatible CUDA torch/torchvision environment using the [official PyTorch instructions](https://pytorch.org/get-started/locally/), then:
 

@@ -25,6 +25,11 @@ FOLDER = ROOT / 'standalone_notebooks'
 SKIP_ROLES = {'training_launch', 'results', 'preflight'}
 
 
+def model_notebook(key):
+    suffix = key if key.endswith("_finetuned") else key + "_finetuned"
+    return next(FOLDER.glob(f"*_{suffix}.ipynb"))
+
+
 def load_definitions(path):
     notebook = nbformat.read(path, as_version=4)
     namespace = {'__name__': '__main__', 'display': lambda *args: None}
@@ -46,11 +51,12 @@ class StandaloneNotebookTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         torch.set_num_threads(2)
-        cls.namespaces = {key: load_definitions(next(FOLDER.glob(f'*_{key}.ipynb')))
+        cls.namespaces = {key: load_definitions(model_notebook(key))
                           for key in DEFAULT_MODELS}
 
     def test_complete_and_without_project_imports(self):
-        paths = sorted(FOLDER.glob('*.ipynb'))
+        paths = sorted([FOLDER/'00_environment_and_data_check.ipynb',
+                        *FOLDER.glob('*_finetuned.ipynb')])
         self.assertEqual(len(paths), 10)
         for path in paths:
             notebook = nbformat.read(path, as_version=4)
@@ -176,7 +182,7 @@ class StandaloneNotebookTests(unittest.TestCase):
 
     def test_resume_original_checkpoint_reproduces_uninterrupted_weights(self):
         namespace=self.namespaces['cnn_finetuned']
-        notebook=nbformat.read(next(FOLDER.glob('*_cnn_finetuned.ipynb')),as_version=4)
+        notebook=nbformat.read(model_notebook('cnn_finetuned'),as_version=4)
         metadata=notebook.metadata['standalone']
         legacy_hashes=json.loads((ROOT/'results/cnn_finetuned/seed_42_pretrained_finetune_all_layers_epochs_20/run_config.json').read_text())['data']['support_code_sha256'] if (ROOT/'results/cnn_finetuned/seed_42_pretrained_finetune_all_layers_epochs_20/run_config.json').exists() else {
             p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'lab_code').glob('*.py')}
@@ -208,7 +214,7 @@ class StandaloneNotebookTests(unittest.TestCase):
                 torch.testing.assert_close(actual['model'][name],weight,rtol=0,atol=0)
 
     def test_single_copied_notebook_works_without_helper_files(self):
-        path=next(FOLDER.glob('*_vit_tiny.ipynb'))
+        path=model_notebook('vit_tiny')
         with tempfile.TemporaryDirectory() as tmp:
             isolated=Path(tmp); target=isolated/path.name
             target.write_bytes(path.read_bytes())
@@ -225,7 +231,7 @@ class StandaloneNotebookTests(unittest.TestCase):
                 os.chdir(before)
 
     def test_notebook_changes_reject_resume(self):
-        path=next(FOLDER.glob('*_cnn_finetuned.ipynb'))
+        path=model_notebook('cnn_finetuned')
         namespace=self.namespaces['cnn_finetuned']
         with tempfile.TemporaryDirectory() as tmp:
             folder=Path(tmp)

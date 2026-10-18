@@ -454,8 +454,14 @@ def write_notebook(filename, cells, key):
 
 
 def build_model_notebook(index, key):
-    filename = f'{index:02d}_{key}.ipynb'
-    title = 'CNN fine-tuned (EfficientNet-B0)' if key == 'cnn_finetuned' else key.replace('_', ' ').title()
+    name = key if key.endswith('_finetuned') else key + '_finetuned'
+    filename = f'{index:02d}_{name}.ipynb'
+    labels = {'cnn_finetuned': 'CNN fine-tuned (EfficientNet-B0)',
+              'vit_tiny': 'ViT-Tiny fine-tuned', 'vit_small': 'ViT-Small fine-tuned',
+              'vit_base': 'ViT-Base fine-tuned', 'vit_large': 'ViT-Large fine-tuned',
+              'resnet50': 'ResNet50 fine-tuned', 'resnet101': 'ResNet101 fine-tuned',
+              'resnet152': 'ResNet152 fine-tuned', 'vmamba_base': 'VMamba-Base fine-tuned'}
+    title = labels[key]
     cells = [nbf.v4.new_markdown_cell(
         f'# {title}: ImageNet weights → RDN full fine-tuning\n\n'
         'This notebook contains its configuration, data checks, model construction, training loop, checkpoint resume, plots, and final test evaluation. '
@@ -541,7 +547,7 @@ def main():
     build_preflight()
     for index, key in enumerate(CONFIGS, 1):
         build_model_notebook(index, key)
-    print('Generated', len(list(OUTPUT.glob('*.ipynb'))), 'self-contained notebooks in', OUTPUT)
+    print('Generated', 1 + len(CONFIGS), 'self-contained notebooks in', OUTPUT)
 
 
 if __name__ == '__main__':

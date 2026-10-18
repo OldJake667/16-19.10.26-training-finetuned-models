@@ -39,61 +39,67 @@
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/02_vit_tiny.ipynb": {
+    "standalone_notebooks/02_vit_tiny_finetuned.ipynb": {
       "model": "vit_tiny",
-      "bytes": 63186,
-      "sha256": "729031270888319b2f4881eeaa5f6c38465561cf85b258afdb4a52f7ac46fa2e",
+      "bytes": 63207,
+      "sha256": "2db395cfaf1a3cde2bf51727d0bf05c4b59e6af68f9d83634b98965b5f7ffbe0",
       "implementation_sha256": "da7ce8903bdeaa02c98cef21eaf91591a4382294048a6035092f4338352a3185",
       "code_cells": 17
     },
-    "standalone_notebooks/03_resnet50.ipynb": {
+    "standalone_notebooks/03_resnet50_finetuned.ipynb": {
       "model": "resnet50",
-      "bytes": 56701,
-      "sha256": "6890438dead7f4d6326e3a8474d3f91ee5a0ddc9fa88ba452cb033b5e7d434ed",
+      "bytes": 56722,
+      "sha256": "4792befd08ac3a91dd89a176c027e5f6fb7ec83fa0e426ce28ce7ff3b04bf590",
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/04_resnet101.ipynb": {
+    "standalone_notebooks/04_resnet101_finetuned.ipynb": {
       "model": "resnet101",
-      "bytes": 56710,
-      "sha256": "c39dcc6f85c76d9d444dac90239fa70c4eab48f83ab6cdeb2bbb62c01e9b8953",
+      "bytes": 56731,
+      "sha256": "0bb537834a4d779c312be5d4f5592c259a24b748b4b9d148cfb164d75c860c15",
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/05_resnet152.ipynb": {
+    "standalone_notebooks/05_resnet152_finetuned.ipynb": {
       "model": "resnet152",
-      "bytes": 56710,
-      "sha256": "dcc4947bf8cee31966288ab18f7982f5d581209356f14d3bd45a32a87c621010",
+      "bytes": 56731,
+      "sha256": "f74858c1ab49b444ea8573f9aa9387d571dac0479718b24e5ddc8ef6c441373a",
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/06_vit_small.ipynb": {
+    "standalone_notebooks/06_vit_small_finetuned.ipynb": {
       "model": "vit_small",
-      "bytes": 56753,
-      "sha256": "0b7bd3b9bf55d1867010424bc740ef8fa4c55a5aa687fe7eb382d017a354eaf9",
+      "bytes": 56774,
+      "sha256": "0adf36b2c3bd8b5ddc91a9f9331785cf9e1255ebf05d4b2fc0e61afb4730843e",
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/07_vit_base.ipynb": {
+    "standalone_notebooks/07_vit_base_finetuned.ipynb": {
       "model": "vit_base",
-      "bytes": 56746,
-      "sha256": "a77a15091ba980f0f1b4cb6a1e02c7e676fc07640dede73d54a15e47ef3bcca5",
+      "bytes": 56767,
+      "sha256": "7e04cbae582366e0857cfef4f1eacf43879d8ef4af8d0446bc7fb0b3159ff250",
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/08_vit_large.ipynb": {
+    "standalone_notebooks/08_vit_large_finetuned.ipynb": {
       "model": "vit_large",
-      "bytes": 56754,
-      "sha256": "e9fdda3bd0b20cbc4312df2df02a96979b95fd50bf1ae393d9e71d1e6462d052",
+      "bytes": 56775,
+      "sha256": "284e7643ea6bbe912a69da5674d430331004aadca6535623714abe441b0edcb7",
       "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
       "code_cells": 16
     },
-    "standalone_notebooks/09_vmamba_base.ipynb": {
+    "standalone_notebooks/09_vmamba_base_finetuned.ipynb": {
       "model": "vmamba_base",
-      "bytes": 128002,
-      "sha256": "adab894a04adbf34f9013ed44ddfeede0f98f2099caa5c12c866eed106a2449f",
+      "bytes": 128023,
+      "sha256": "c28ff9d4803368328837398be6b2bc8be942e286d521fedf00d1050f7ce6b70b",
       "implementation_sha256": "a35687950ae474ec3a6fbc6db7c6253d3c3e29d5126b4c20fc40a4cc0ccf5219",
       "code_cells": 20
     }
-  }
+  },
+  "filenames_updated_utc": "2026-10-18T21:15:29.061084+00:00",
+  "filename_update_checks": [
+    "All ten canonical notebooks validate and retain their implementation hashes",
+    "Renamed notebook loads from an empty folder",
+    "Existing checkpoint contracts remain compatible"
+  ]
 }
