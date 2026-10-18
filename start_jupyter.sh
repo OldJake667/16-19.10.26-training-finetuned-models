@@ -28,4 +28,4 @@ folder.mkdir(parents=True, exist_ok=True)
     'display_name': 'RDN fine-tuning', 'language': 'python'}, indent=2) + '\n')
 PY
 exec "$PYTHON" -m jupyterlab --ServerApp.ip=127.0.0.1 \
-  --ServerApp.root_dir="$PROJECT_DIR" --LabApp.default_url=/lab/tree/notebooks "$@"
+  --ServerApp.root_dir="$PROJECT_DIR" --LabApp.default_url=/lab/tree/standalone_notebooks "$@"

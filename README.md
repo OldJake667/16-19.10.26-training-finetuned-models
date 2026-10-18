@@ -22,7 +22,7 @@ ViT-Tiny keeps the original grayscale architecture. Every pretrained backbone te
 
 **ImageNet supplies the initial weights; RDN supplies the fine-tuning data.** The ViT weights were pretrained on ImageNet-21k and adapted to ImageNet-1k before this experiment; EfficientNet, ResNets, and VMamba use ImageNet-1k sources. Record this difference when comparing models. ImageNet images are not required locally. There is no linear probing, feature caching, or silent random-weight fallback.
 
-All nine models are active in the default run list and notebooks. ViT-Tiny, ResNet50, and ViT-Base have been restored. The original scratch models and results remain in their separate project; `archived_notebooks/` retains older fine-tuning scaffold versions as historical references.
+All nine models are active in the default run list and self-contained notebooks. ViT-Tiny, ResNet50, and ViT-Base have been restored. The original scratch models and results remain in their separate project; `archived_notebooks/` retains older fine-tuning scaffold versions as historical references.
 
 ImageNet is the baseline pretraining choice. For possible alternatives such as DINOv3, see [pretraining options](PRETRAINING_OPTIONS.md); which source works best on RDN must be established on the validation split.
 
@@ -35,7 +35,7 @@ cd /home/murat/Desktop/fine_tuned_models
 ./start_jupyter.sh
 ```
 
-The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `00_environment_and_data_check.ipynb`, then one of the nine model notebooks. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
+The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `standalone_notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `standalone_notebooks/00_environment_and_data_check.ipynb`, then one of the nine model notebooks in that folder. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
 
 For another computer, activate a compatible CUDA torch/torchvision environment using the [official PyTorch instructions](https://pytorch.org/get-started/locally/), then:
 
@@ -51,11 +51,17 @@ python -m jupyter lab
 
 Alternatively, set `RDN_PYTHON` to your existing environment's Python executable and use `./start_jupyter.sh` with `RDN_DATA_ROOT` exported. The absolute path in the first example describes this local checkout; a clone can be placed elsewhere.
 
-The notebooks expose `DATA_ROOT`, `OVERRIDES`, `RUN_TRAINING`, and `RUN_FINAL_TEST`. Training and weight downloads occur only when the explicit launch cell runs. The first new run obtains published weights; resume rebuilds the architecture and loads its saved checkpoint without downloading them again.
+The self-contained notebooks expose `PROJECT_DIR`, `DATA_ROOT`, `WEIGHTS_DIR`, a complete editable `CONFIG` dictionary, `RUN_NAME`, `RUN_TRAINING`, and `RUN_FINAL_TEST`. All data loading, model construction, optimizer, training, checkpoint resume, validation, plotting, and test evaluation code is inside each notebook. They import installed libraries only and do not read project helper scripts, `MODEL_CONFIGS.json`, or `PACKAGE_MANIFEST.json`. The original data-file hashes are embedded. A single notebook can be copied elsewhere with the raw dataset and installed packages; adjust the paths in its settings cell.
+
+The longer VMamba notebook includes the official architecture, scan operations, CUDA bindings, and MIT license. Standard ResNet, ViT, and EfficientNet backbones are constructed using installed timm; ViT-Tiny's original grayscale architecture and weight-transfer code are included explicitly. Compiled dependencies and pretrained weight files remain external packages/data.
+
+Training and downloads occur only in the explicit launch cell. The first new run obtains published weights; resume rebuilds the architecture and loads its saved checkpoint without downloading them again. Notebook implementation code is hashed separately from editable settings and outputs. Save notebook edits before starting. Existing unchanged runs are accepted only when their configuration, data, initialization, and recorded source identities match the verified compatibility snapshot; `notebook_execution.json` then records the notebook identity while retaining the original checkpoint contract.
+
+The older `notebooks/` folder remains intact so currently open notebooks and their outputs are preserved. Shut down the old GPU kernel before opening a self-contained replacement for the same model. The command-line tools remain available separately. This conversion preserves the model recipes, including current ViT-Tiny preprocessing and dropout; it does not claim to fix the diagnosed ViT convergence problems.
 
 ## Training and evaluation
 
-- Fixed split: **97,200 training / 10,800 validation / 3,000 held-out test**. Labels use the first `argmax(compact_response) >= 83`, not an exact raw-reflection 8.3 GHz task. The four original data-file hashes are pinned in `PACKAGE_MANIFEST.json` and checked before training.
+- Fixed split: **97,200 training / 10,800 validation / 3,000 held-out test**. Labels use the first `argmax(compact_response) >= 83`, not an exact raw-reflection 8.3 GHz task. The four original data-file hashes are embedded in the self-contained notebooks and checked before training; the command-line path also pins them in `PACKAGE_MANIFEST.json`.
 - Maximum epochs: **10** for ResNet152, ViT-Base, ViT-Large, and VMamba-Base; **20** for CNN fine-tuned, ViT-Tiny, ResNet50, ResNet101, and ViT-Small. All nine use early-stopping patience **7**, based on validation loss, with two warmup epochs and cosine decay over their configured budget. These settings are independent of scratch runs. Adjust the configuration before starting a new run.
 - AdamW backbone learning rate `1e-5`, head learning rate `1e-4`, weight decay `0.05`, with no decay on bias/norm/token embeddings. These are starting recipes, not optimized settings.
 - Effective batch **128** through sample-weighted accumulation. Physical batches are initial settings for the 8 GB GPU; full GPU memory/throughput checks remain necessary. ViTs and VMamba use activation checkpointing. EfficientNet and ResNets avoid activation checkpointing across BatchNorm layers.
@@ -101,14 +107,20 @@ A new environment needs the [official Mamba installation/build instructions](htt
 ## Validation and provenance
 
 ```bash
-MPLBACKEND=Agg python -m unittest discover -s tests -v
+MPLBACKEND=Agg python -m unittest tests.test_standalone_notebooks -v
+# Original command-line implementation checks (clean legacy notebooks required):
+MPLBACKEND=Agg python -m unittest tests.test_training -v
 python tools/verify_models.py --data-root "$RDN_DATA_ROOT"
 # Optional published EfficientNet weights and synthetic CPU forward check:
 python tools/verify_models.py --pretrained-cnn
 ```
 
-`VERIFICATION.json` and `VERIFICATION_PRETRAINED.json` describe checks actually performed. Synthetic checks are not research training or held-out evaluation. GPU profiling and convergence remain to be measured when the GPU is available.
+`VERIFICATION_STANDALONE.json`, `VERIFICATION.json`, and `VERIFICATION_PRETRAINED.json` describe checks actually performed. Synthetic checks are not research training or held-out evaluation. GPU profiling and convergence remain to be measured when the GPU is available.
 
 The original data/runtime and custom architectures derive from scratch commit `380a36849e292526cdd99a928e123c3abae4d755`. Third-party weights retain their upstream licenses and are not redistributed here.
 
 References: [PyTorch transfer-learning tutorial](https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html), [timm model library](https://github.com/huggingface/pytorch-image-models), [ViT AugReg models](https://huggingface.co/timm/vit_small_patch16_224.augreg_in21k_ft_in1k), [VMamba](https://github.com/MzeroMiko/VMamba).
+
+## Notebook maintenance
+
+The runnable notebooks contain their own code. Maintainers can rebuild clean copies with `python tools/build_standalone_notebooks.py`; this build tool is not required to run them. Back up notebook edits and outputs before regenerating. `MODEL_CONFIGS.json` remains the command-line/build-time configuration; editing a standalone notebook's `CONFIG` changes that notebook's run only.

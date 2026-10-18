@@ -1,0 +1,99 @@
+{
+  "verified_utc": "2026-10-18T21:08:53.392321+00:00",
+  "implementation": "self-contained fine-tuning notebooks",
+  "device": "CPU",
+  "tests_passed": 11,
+  "test_command": "HF_HUB_OFFLINE=1 MPLBACKEND=Agg python -m unittest tests.test_standalone_notebooks -v",
+  "checks": [
+    "All ten clean notebooks validate and compile; no project helper imports, script execution, or external configuration reads",
+    "All nine model parameter names and shapes match the original implementation; all parameters trainable",
+    "Cached ImageNet CNN and ViT-Tiny initialized tensor values and provenance hashes match exactly",
+    "Official VMamba-Base checkpoint SHA-256 verified and complete backbone loaded strictly",
+    "Reduced VMamba CPU forward, input gradients, and parameter gradients match the original implementation",
+    "Exact raw-data hashes and fixed split verified; validation contains both classes",
+    "Existing real CNN and ViT-Tiny checkpoint contracts accepted in temporary copies",
+    "Synthetic interrupted original run resumes with bit-identical final weights in the notebook implementation",
+    "A copied notebook loads from an empty folder without helper files or configuration JSON",
+    "Changed notebook code rejects checkpoint resume",
+    "Synthetic final test only runs after checkpoint selection and uses cached metrics on repeat"
+  ],
+  "full_dataset_training_started": false,
+  "dataset_model_inference_executed": false,
+  "gpu_kernel_execution_verified_in_this_change": false,
+  "limitations": [
+    "CUDA/BF16 training was not rerun; optional notebook kernel preflight is available",
+    "This refactor preserves the existing recipes and does not resolve earlier ViT convergence issues"
+  ],
+  "notebooks": {
+    "standalone_notebooks/00_environment_and_data_check.ipynb": {
+      "model": null,
+      "bytes": 19479,
+      "sha256": "c8177d2b725225401d752bd84a820a62372a21a586fb9f874dbcfda276514ae1",
+      "implementation_sha256": "714fd7b662fa99796bc6ed3a258d6dd41e6ec14112bafc3c77a686908860d426",
+      "code_cells": 5
+    },
+    "standalone_notebooks/01_cnn_finetuned.ipynb": {
+      "model": "cnn_finetuned",
+      "bytes": 56887,
+      "sha256": "1681c168b6f9bcd34dc2aeb9ae7894db3f56404aedef4d6988d85091647615d8",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/02_vit_tiny.ipynb": {
+      "model": "vit_tiny",
+      "bytes": 63186,
+      "sha256": "729031270888319b2f4881eeaa5f6c38465561cf85b258afdb4a52f7ac46fa2e",
+      "implementation_sha256": "da7ce8903bdeaa02c98cef21eaf91591a4382294048a6035092f4338352a3185",
+      "code_cells": 17
+    },
+    "standalone_notebooks/03_resnet50.ipynb": {
+      "model": "resnet50",
+      "bytes": 56701,
+      "sha256": "6890438dead7f4d6326e3a8474d3f91ee5a0ddc9fa88ba452cb033b5e7d434ed",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/04_resnet101.ipynb": {
+      "model": "resnet101",
+      "bytes": 56710,
+      "sha256": "c39dcc6f85c76d9d444dac90239fa70c4eab48f83ab6cdeb2bbb62c01e9b8953",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/05_resnet152.ipynb": {
+      "model": "resnet152",
+      "bytes": 56710,
+      "sha256": "dcc4947bf8cee31966288ab18f7982f5d581209356f14d3bd45a32a87c621010",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/06_vit_small.ipynb": {
+      "model": "vit_small",
+      "bytes": 56753,
+      "sha256": "0b7bd3b9bf55d1867010424bc740ef8fa4c55a5aa687fe7eb382d017a354eaf9",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/07_vit_base.ipynb": {
+      "model": "vit_base",
+      "bytes": 56746,
+      "sha256": "a77a15091ba980f0f1b4cb6a1e02c7e676fc07640dede73d54a15e47ef3bcca5",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/08_vit_large.ipynb": {
+      "model": "vit_large",
+      "bytes": 56754,
+      "sha256": "e9fdda3bd0b20cbc4312df2df02a96979b95fd50bf1ae393d9e71d1e6462d052",
+      "implementation_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea",
+      "code_cells": 16
+    },
+    "standalone_notebooks/09_vmamba_base.ipynb": {
+      "model": "vmamba_base",
+      "bytes": 128002,
+      "sha256": "adab894a04adbf34f9013ed44ddfeede0f98f2099caa5c12c866eed106a2449f",
+      "implementation_sha256": "a35687950ae474ec3a6fbc6db7c6253d3c3e29d5126b4c20fc40a4cc0ccf5219",
+      "code_cells": 20
+    }
+  }
+}
