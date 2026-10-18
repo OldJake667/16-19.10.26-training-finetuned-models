@@ -56,7 +56,7 @@ The notebooks expose `DATA_ROOT`, `OVERRIDES`, `RUN_TRAINING`, and `RUN_FINAL_TE
 ## Training and evaluation
 
 - Fixed split: **97,200 training / 10,800 validation / 3,000 held-out test**. Labels use the first `argmax(compact_response) >= 83`, not an exact raw-reflection 8.3 GHz task. The four original data-file hashes are pinned in `PACKAGE_MANIFEST.json` and checked before training.
-- Existing fine-tuning defaults: **20 maximum epochs**, early-stopping patience **5**, two warmup epochs and cosine decay. These settings are independent of shorter scratch runs. Adjust the configuration before starting a new run.
+- Maximum epochs: **10** for ResNet152, ViT-Base, ViT-Large, and VMamba-Base; **20** for CNN fine-tuned, ViT-Tiny, ResNet50, ResNet101, and ViT-Small. All nine use early-stopping patience **7**, based on validation loss, with two warmup epochs and cosine decay over their configured budget. These settings are independent of scratch runs. Adjust the configuration before starting a new run.
 - AdamW backbone learning rate `1e-5`, head learning rate `1e-4`, weight decay `0.05`, with no decay on bias/norm/token embeddings. These are starting recipes, not optimized settings.
 - Effective batch **128** through sample-weighted accumulation. Physical batches are initial settings for the 8 GB GPU; full GPU memory/throughput checks remain necessary. ViTs and VMamba use activation checkpointing. EfficientNet and ResNets avoid activation checkpointing across BatchNorm layers.
 - Full geometry is resized without random crops, flips, rotations, or erasing. Normalization and interpolation follow the recorded configuration. Physical batches differ, so BatchNorm statistics also differ.
@@ -76,7 +76,7 @@ python tools/run_all.py --data-root "$RDN_DATA_ROOT"
 python tools/summarize_results.py
 ```
 
-Outputs use `results/<model>/seed_42_pretrained_finetune_all_layers_epochs_20/`. Each run records its configuration, data/source identities, exact initialized-state hash, total/trainable parameters, and software environment. It saves best/last checkpoints, optimizer/scheduler/scaler/RNG state, history, train/validation metrics and predictions, and plots. Optional vector plots are supported by `lab_code.runtime.plot_history(..., export_pdf=True)`.
+Outputs use `results/<model>/seed_42_pretrained_finetune_all_layers_epochs_<max_epochs>/`, ending in `epochs_10` or `epochs_20` according to the model configuration. Each run records its configuration, data/source identities, exact initialized-state hash, total/trainable parameters, and software environment. It saves best/last checkpoints, optimizer/scheduler/scaler/RNG state, history, train/validation metrics and predictions, and plots. Optional vector plots are supported by `lab_code.runtime.plot_history(..., export_pdf=True)`.
 
 An interrupted partial epoch is repeated; completed epochs resume from the last checkpoint. A completed run loads its validation-selected checkpoint. Changes to settings, data, or source code require a **new run name**. `--eval-only` loads a completed run, and `--no-test` disables held-out evaluation. Data, environments, pretrained weights, and trained checkpoints remain outside Git.
 
