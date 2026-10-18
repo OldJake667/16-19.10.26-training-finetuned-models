@@ -7,9 +7,19 @@
   "research_training_executed": false,
   "dataset_model_inference_executed": false,
   "architectures": {
-    "cnn_efficientnet_b0": {
+    "cnn_finetuned": {
       "total_parameters": 4010110,
       "trainable_parameters": 4010110,
+      "created_on_meta_without_weights": true
+    },
+    "vit_tiny": {
+      "total_parameters": 5426498,
+      "trainable_parameters": 5426498,
+      "created_on_meta_without_weights": true
+    },
+    "resnet50": {
+      "total_parameters": 23512130,
+      "trainable_parameters": 23512130,
       "created_on_meta_without_weights": true
     },
     "resnet101": {
@@ -25,6 +35,11 @@
     "vit_small": {
       "total_parameters": 21666434,
       "trainable_parameters": 21666434,
+      "created_on_meta_without_weights": true
+    },
+    "vit_base": {
+      "total_parameters": 85800194,
+      "trainable_parameters": 85800194,
       "created_on_meta_without_weights": true
     },
     "vit_large": {

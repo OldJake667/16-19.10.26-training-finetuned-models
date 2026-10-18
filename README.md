@@ -1,23 +1,30 @@
 # 16–19 October 2026: fine-tuned RDN models
 
-Six ImageNet-pretrained models are configured for **full fine-tuning** on the same compact RDN128 data and fixed split as the [from-scratch experiment](https://github.com/OldJake667/training_models_12-16.10.26_from_scratch). All backbone layers and the new two-class heads train. These are prepared experiments; no completed research training results are claimed.
+Nine ImageNet-pretrained models are configured for **full fine-tuning** on the same compact RDN128 data and fixed split as the [from-scratch experiment](https://github.com/OldJake667/training_models_12-16.10.26_from_scratch). All backbone layers and the new two-class heads train. These are prepared experiments; no completed research training results are claimed.
 
 ## Selected models
 
-| Model key | Pretrained architecture | Physical batch / accumulation |
-| --- | --- | --- |
-| `cnn_efficientnet_b0` | EfficientNet-B0, `efficientnet_b0.ra_in1k` | 16 / 8 |
-| `resnet101` | `resnet101.a1h_in1k` | 8 / 16 |
-| `resnet152` | `resnet152.a1h_in1k` | 4 / 32 |
-| `vit_small` | `vit_small_patch16_224.augreg_in21k_ft_in1k` | 16 / 8 |
-| `vit_large` | `vit_large_patch16_224.augreg_in21k_ft_in1k` | 1 / 128 |
-| `vmamba_base` | Official VMamba-Base `vmamba_base_s2l15` | 1 / 128 |
+| Display name | Model key | Pretrained architecture | Physical batch / accumulation |
+| --- | --- | --- | --- |
+| **CNN fine-tuned** | `cnn_finetuned` | EfficientNet-B0, `efficientnet_b0.ra_in1k` | 16 / 8 |
+| ViT-Tiny | `vit_tiny` | `vit_tiny_patch16_224.augreg_in21k_ft_in1k`, mapped to the original grayscale architecture | 16 / 8 |
+| ResNet50 | `resnet50` | `resnet50.a1_in1k` | 16 / 8 |
+| ResNet101 | `resnet101` | `resnet101.a1h_in1k` | 8 / 16 |
+| ResNet152 | `resnet152` | `resnet152.a1h_in1k` | 4 / 32 |
+| ViT-Small | `vit_small` | `vit_small_patch16_224.augreg_in21k_ft_in1k` | 16 / 8 |
+| ViT-Base | `vit_base` | `vit_base_patch16_224.augreg_in21k_ft_in1k` | 4 / 32 |
+| ViT-Large | `vit_large` | `vit_large_patch16_224.augreg_in21k_ft_in1k` | 1 / 128 |
+| VMamba-Base | `vmamba_base` | Official `vmamba_base_s2l15` | 1 / 128 |
 
-The CNN reference is **EfficientNet-B0**, not the original custom three-block CNN: that custom architecture has no published ImageNet weights. Its comparison changes both architecture and initialization. VMamba-Base has **87,534,850 trainable parameters** with its two-class head, versus approximately 89 million with the original ImageNet head. The earlier Tiny scratch results remain in the scratch repository.
+**CNN fine-tuned** uses EfficientNet-B0. The original custom three-block CNN has no published ImageNet weights, so its comparison changes both architecture and initialization. VMamba-Base has **87,534,850 trainable parameters** with its two-class head, versus approximately 89 million with the original ImageNet head. Replacing the earlier Tiny scratch baseline with Base also changes capacity as well as initialization; retain that distinction when reporting results.
+
+ViT-Tiny keeps the original grayscale architecture. Every pretrained backbone tensor is transferred explicitly, RGB patch kernels are summed into a one-channel projection, and the pretrained LayerNorm epsilon is retained. The task head is new. Synthetic checks verify equivalence to the corresponding RGB model receiving replicated grayscale inputs.
 
 **ImageNet supplies the initial weights; RDN supplies the fine-tuning data.** The ViT weights were pretrained on ImageNet-21k and adapted to ImageNet-1k before this experiment; EfficientNet, ResNets, and VMamba use ImageNet-1k sources. Record this difference when comparing models. ImageNet images are not required locally. There is no linear probing, feature caching, or silent random-weight fallback.
 
-Only these six models are in the default run list and active notebooks. `archived_notebooks/` preserves the earlier broader scaffold and its configurations as historical references.
+All nine models are active in the default run list and notebooks. ViT-Tiny, ResNet50, and ViT-Base have been restored. The original scratch models and results remain in their separate project; `archived_notebooks/` retains older fine-tuning scaffold versions as historical references.
+
+ImageNet is the baseline pretraining choice. For possible alternatives such as DINOv3, see [pretraining options](PRETRAINING_OPTIONS.md); which source works best on RDN must be established on the validation split.
 
 ## Run in Jupyter
 
@@ -28,7 +35,7 @@ cd /home/murat/Desktop/fine_tuned_models
 ./start_jupyter.sh
 ```
 
-The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `00_environment_and_data_check.ipynb`, then one of the six model notebooks. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
+The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `00_environment_and_data_check.ipynb`, then one of the nine model notebooks. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
 
 For another computer, activate a compatible CUDA torch/torchvision environment using the [official PyTorch instructions](https://pytorch.org/get-started/locally/), then:
 
@@ -64,7 +71,7 @@ The existing scratch ViT-Large continuation is a separate experiment. Preparing 
 python train.py --model resnet101 --data-root "$RDN_DATA_ROOT"
 python train.py --model vmamba_base --data-root "$RDN_DATA_ROOT" --weights-dir "$RDN_PRETRAINED_DIR"
 python train.py --model vit_large --print-config
-# Sequential execution of the six selected models; starts real training:
+# Sequential execution of the nine selected models; starts real training:
 python tools/run_all.py --data-root "$RDN_DATA_ROOT"
 python tools/summarize_results.py
 ```

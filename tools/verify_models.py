@@ -54,7 +54,7 @@ def verify(data_root=None, pretrained_cnn=False):
         report['all_preprocessing_shapes_checked'] = True
     if pretrained_cnn:
         torch.manual_seed(42)
-        model, provenance = build_model(get_config('cnn_efficientnet_b0'))
+        model, provenance = build_model(get_config('cnn_finetuned'))
         model.eval()
         with torch.no_grad():
             output = model(torch.randn(2,3,224,224))

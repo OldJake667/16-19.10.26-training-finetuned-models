@@ -12,8 +12,8 @@ from .runtime import (atomic_json, build_training_loaders, config_identity, eval
                       fit, load_full_data, seed_everything, select_device, sha256_file)
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_MODELS = ('cnn_efficientnet_b0', 'resnet101', 'resnet152',
-                  'vit_small', 'vit_large', 'vmamba_base')
+DEFAULT_MODELS = ('cnn_finetuned', 'vit_tiny', 'resnet50', 'resnet101', 'resnet152',
+                  'vit_small', 'vit_base', 'vit_large', 'vmamba_base')
 
 
 def get_config(model_key, overrides=None):

@@ -37,7 +37,7 @@ def setup():
     rt.seed_everything(42)
     model = Toy()
     device = torch.device('cpu')
-    config = get_config('cnn_efficientnet_b0', {'max_epochs': 2, 'warmup_epochs': 0, 'precision': 'fp32',
+    config = get_config('cnn_finetuned', {'max_epochs': 2, 'warmup_epochs': 0, 'precision': 'fp32',
                         'batch_size': 3, 'accumulation_steps': 2, 'learning_rate': .001,
                         'head_learning_rate': .01, 'early_stopping_patience': 5})
     loaders = {s: rt.make_loader(Samples(), 3, s == 'train', 42, 0, device) for s in ('train', 'validation')}
@@ -50,7 +50,7 @@ class TrainingTests(unittest.TestCase):
 
     def test_tiny_transfer_matches_replicated_rgb(self):
         torch.manual_seed(42)
-        config = json.loads((ROOT/'archived_notebooks/MODEL_CONFIGS.json').read_text())['vit_tiny']
+        config = get_config('vit_tiny')
         target, _ = build_model(config, load_weights=False)
         source = timm.create_model(config['architecture'], pretrained=False, num_classes=2)
         transfer_tiny(source, target)
@@ -86,7 +86,7 @@ class TrainingTests(unittest.TestCase):
     def test_accumulation_weights_partial_window_by_samples(self):
         torch.manual_seed(4)
         model = nn.Linear(4, 2); reference = copy.deepcopy(model)
-        c = get_config('cnn_efficientnet_b0', {'precision': 'fp32', 'batch_size': 3, 'accumulation_steps': 2, 'gradient_clip_norm': 0.0})
+        c = get_config('cnn_finetuned', {'precision': 'fp32', 'batch_size': 3, 'accumulation_steps': 2, 'gradient_clip_norm': 0.0})
         data = Samples(7); loader = rt.make_loader(data, 3, False, 42, 0, torch.device('cpu'))
         optimizer = torch.optim.SGD(model.parameters(), lr=.1)
         rt.train_one_epoch(model, loader, optimizer, torch.amp.GradScaler('cuda', enabled=False), c, torch.device('cpu'))
@@ -100,7 +100,7 @@ class TrainingTests(unittest.TestCase):
         class One(nn.Module):
             def forward(self, x): return torch.tensor([0., 1.]).expand(len(x), 2)
         loader = rt.make_loader(Samples(8), 3, False, 42, 0, torch.device('cpu'))
-        metrics, _ = rt.evaluate(One(), loader, torch.device('cpu'), get_config('cnn_efficientnet_b0', {'precision': 'fp32'}))
+        metrics, _ = rt.evaluate(One(), loader, torch.device('cpu'), get_config('cnn_finetuned', {'precision': 'fp32'}))
         self.assertEqual(metrics['prediction_counts'], [0, 8])
         self.assertEqual(metrics['balanced_accuracy'], .5)
         self.assertTrue(metrics['single_class_predictions'])
@@ -134,7 +134,7 @@ class TrainingTests(unittest.TestCase):
 
     def test_all_notebooks_are_clean_and_compile(self):
         notebooks = list((ROOT/'notebooks').glob('*.ipynb'))
-        self.assertEqual(len(notebooks), 7)
+        self.assertEqual(len(notebooks), 10)
         for path in notebooks:
             n = nbformat.read(path, as_version=4); nbformat.validate(n)
             for cell in n.cells:
@@ -151,8 +151,8 @@ class TrainingTests(unittest.TestCase):
             if key != 'vmamba_base': self.assertIsNotNone(timm.get_pretrained_cfg(c['architecture']))
 
     def test_requested_model_set_and_vmamba_base(self):
-        self.assertEqual(set(DEFAULT_MODELS), {'cnn_efficientnet_b0', 'resnet101', 'resnet152',
-                                             'vit_small', 'vit_large', 'vmamba_base'})
+        self.assertEqual(set(DEFAULT_MODELS), {'cnn_finetuned', 'vit_tiny', 'resnet50', 'resnet101',
+                                             'resnet152', 'vit_small', 'vit_base', 'vit_large', 'vmamba_base'})
         self.assertEqual(set(json.loads((ROOT/'MODEL_CONFIGS.json').read_text())), set(DEFAULT_MODELS))
         config = get_config('vmamba_base', {'require_fast_vmamba': False})
         original_linspace = torch.linspace

@@ -100,7 +100,7 @@ def build_model(config, *, load_weights=True, checkpoint=None, weights_dir='weig
         raise ValueError('This experiment fine-tunes all layers; train_backbone must be true')
     if key == 'cnn' and mode != 'checkpoint':
         raise ValueError('The custom CNN has no published pretrained weights. Supply its checkpoint '
-                         'or choose cnn_efficientnet_b0, the pretrained CNN reference.')
+                         'or choose cnn_finetuned, the EfficientNet-B0 pretrained CNN reference.')
     use_pretrained = mode == 'pretrained' and load_weights
     if key == 'cnn':
         model, provenance = ScratchCNN(classes=2), {'source': 'user-supplied custom CNN checkpoint'}

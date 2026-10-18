@@ -37,6 +37,8 @@ if __name__ == '__main__':
     for i, key in enumerate(DEFAULT_MODELS, 1):
         continuation = key == 'cnn'
         header = ('Original custom CNN: optional checkpoint continuation' if continuation else key + ': published pretrained weights, all layers fine-tuned')
+        if key == 'cnn_finetuned':
+            header = 'CNN fine-tuned (EfficientNet-B0)'
         intro = ('This custom architecture has no published ImageNet checkpoint. Supply the original '
                  'best_checkpoint.pt. This is continued training, not a pretrained-vs-scratch comparison.' if continuation else
                  'Uses the same full compact RDN data and fixed split as the scratch experiment. '
