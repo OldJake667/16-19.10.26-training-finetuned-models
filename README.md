@@ -1,135 +1,107 @@
 # 16–19 October 2026: fine-tuned RDN models
 
-Fine-tune published pretrained models on the **same compact RDN128 data and split** as the earlier from-scratch experiment. The default is **full fine-tuning**: all backbone layers and a new two-class head are trainable. This repository contains runnable code and clean notebooks, not completed training results.
+Six ImageNet-pretrained models are configured for **full fine-tuning** on the same compact RDN128 data and fixed split as the [from-scratch experiment](https://github.com/OldJake667/training_models_12-16.10.26_from_scratch). All backbone layers and the new two-class heads train. These are prepared experiments; no completed research training results are claimed.
 
-Previous experiment: [12–16 October, from scratch](https://github.com/OldJake667/training_models_12-16.10.26_from_scratch).
+## Selected models
 
-## Which weights should I use?
+| Model key | Pretrained architecture | Physical batch / accumulation |
+| --- | --- | --- |
+| `cnn_efficientnet_b0` | EfficientNet-B0, `efficientnet_b0.ra_in1k` | 16 / 8 |
+| `resnet101` | `resnet101.a1h_in1k` | 8 / 16 |
+| `resnet152` | `resnet152.a1h_in1k` | 4 / 32 |
+| `vit_small` | `vit_small_patch16_224.augreg_in21k_ft_in1k` | 16 / 8 |
+| `vit_large` | `vit_large_patch16_224.augreg_in21k_ft_in1k` | 1 / 128 |
+| `vmamba_base` | Official VMamba-Base `vmamba_base_s2l15` | 1 / 128 |
 
-Use **published pretrained weights** for the main experiment. This tests whether transfer learning helps compared with random initialization. Keep your old validation-selected checkpoints as baselines. Continuing those checkpoints is a separate experiment in additional training, not ImageNet initialization.
+The CNN reference is **EfficientNet-B0**, not the original custom three-block CNN: that custom architecture has no published ImageNet weights. Its comparison changes both architecture and initialization. VMamba-Base has **87,534,850 trainable parameters** with its two-class head, versus approximately 89 million with the original ImageNet head. The earlier Tiny scratch results remain in the scratch repository.
 
-Two exceptions need explicit labels:
+**ImageNet supplies the initial weights; RDN supplies the fine-tuning data.** The ViT weights were pretrained on ImageNet-21k and adapted to ImageNet-1k before this experiment; EfficientNet, ResNets, and VMamba use ImageNet-1k sources. Record this difference when comparing models. ImageNet images are not required locally. There is no linear probing, feature caching, or silent random-weight fallback.
 
-- The original custom three-block CNN has **no published ImageNet checkpoint**. `cnn_resnet18` is a separately labelled ImageNet-pretrained CNN reference with a different architecture. `cnn` optionally continues the exact custom CNN from a supplied checkpoint.
-- `dinov2` uses the published DINOv2 pretrained backbone, whose source training data differs from the ImageNet supervised models. It is an additional reference: DINOv2 was excluded from the nine active RDN scratch runs.
+Only these six models are in the default run list and active notebooks. `archived_notebooks/` preserves the earlier broader scaffold and its configurations as historical references.
 
-## Quick start on the lab computer
+## Run in Jupyter
 
-Use the existing working CUDA/PyTorch environment from the scratch experiment, or install a compatible torch/torchvision pair using the [official PyTorch instructions](https://pytorch.org/get-started/locally/). An NVIDIA GPU and Linux/WSL2 are recommended; VMamba requires its CUDA scan extension. The locally checked CPU versions are torch 2.8.0 / torchvision 0.23.0; the CUDA lab must pass the preflight independently.
+On the configured computer:
 
 ```bash
-git clone https://github.com/OldJake667/16-19.10.26-training-finetuned-models.git
-cd 16-19.10.26-training-finetuned-models
-# Activate your existing CUDA virtual environment here.
-python -m pip install -r requirements.txt
-
-# Root of the EXISTING RDN package, containing data/ and PACKAGE_MANIFEST.json:
-export RDN_DATA_ROOT=/path/to/existing/rdn_package
-python tools/preflight.py --data-root "$RDN_DATA_ROOT"
-
-# A practical first fine-tuning run:
-python train.py --model resnet50 --data-root "$RDN_DATA_ROOT"
+cd /home/murat/Desktop/fine_tuned_models
+./start_jupyter.sh
 ```
 
-**Original data and trained weight files are not uploaded here.** Reuse the full RDN package already on your lab machine. The loader verifies the exact four data-file SHA-256 values, target, unique geometries, and original split. `PACKAGE_MANIFEST.json` in this repository records the required data identities. Point `--data-root` to the existing package; do not download a different split for comparison.
+The local launcher uses the existing CUDA Python environment and RDN dataset, selects the **RDN fine-tuning** kernel, and opens `notebooks/`. Its machine-specific settings, environment, Jupyter runtime, and datasets are ignored by Git. Open `00_environment_and_data_check.ipynb`, then one of the six model notebooks. Review the configuration and select **Run All**. Run one model at a time and shut down its kernel before starting another.
 
-### Jupyter notebooks
+For another computer, activate a compatible CUDA torch/torchvision environment using the [official PyTorch instructions](https://pytorch.org/get-started/locally/), then:
 
 ```bash
-python -m ipykernel install --user --name rdn-finetune --display-name "RDN fine-tuning"
+python -m pip install -r requirements.txt
+export RDN_DATA_ROOT=/path/to/existing/rdn_package
+# Optional local directory containing the verified VMamba-Base ImageNet file:
+export RDN_PRETRAINED_DIR=/path/to/pretrained
+python tools/preflight.py --data-root "$RDN_DATA_ROOT"
+python -m ipykernel install --user --name rdn-finetune --display-name 'RDN fine-tuning'
 python -m jupyter lab
 ```
 
-Open `notebooks/00_environment_and_data_check.ipynb`, select **RDN fine-tuning**, set `DATA_ROOT`, and run it. Then open a model notebook, review the configuration, and use **Run All**. Each notebook has explicit `RUN_TRAINING` and `RUN_FINAL_TEST` switches. There is no training or download at import time. Run one model at a time and shut down its kernel before starting another.
+Alternatively, set `RDN_PYTHON` to your existing environment's Python executable and use `./start_jupyter.sh` with `RDN_DATA_ROOT` exported. The absolute path in the first example describes this local checkout; a clone can be placed elsewhere.
+
+The notebooks expose `DATA_ROOT`, `OVERRIDES`, `RUN_TRAINING`, and `RUN_FINAL_TEST`. Training and weight downloads occur only when the explicit launch cell runs. The first new run obtains published weights; resume rebuilds the architecture and loads its saved checkpoint without downloading them again.
+
+## Training and evaluation
+
+- Fixed split: **97,200 training / 10,800 validation / 3,000 held-out test**. Labels use the first `argmax(compact_response) >= 83`, not an exact raw-reflection 8.3 GHz task. The four original data-file hashes are pinned in `PACKAGE_MANIFEST.json` and checked before training.
+- Existing fine-tuning defaults: **20 maximum epochs**, early-stopping patience **5**, two warmup epochs and cosine decay. These settings are independent of shorter scratch runs. Adjust the configuration before starting a new run.
+- AdamW backbone learning rate `1e-5`, head learning rate `1e-4`, weight decay `0.05`, with no decay on bias/norm/token embeddings. These are starting recipes, not optimized settings.
+- Effective batch **128** through sample-weighted accumulation. Physical batches are initial settings for the 8 GB GPU; full GPU memory/throughput checks remain necessary. ViTs and VMamba use activation checkpointing. EfficientNet and ResNets avoid activation checkpointing across BatchNorm layers.
+- Full geometry is resized without random crops, flips, rotations, or erasing. Normalization and interpolation follow the recorded configuration. Physical batches differ, so BatchNorm statistics also differ.
+- Minimum validation loss selects the checkpoint. Training/validation accuracy and loss plots appear in Jupyter and are saved. Each epoch also logs balanced accuracy, macro-F1, prediction counts, and one-class-prediction diagnostics.
+- Final held-out evaluation saves accuracy, balanced accuracy, macro-F1, ROC-AUC, predictions, and a confusion matrix. Test scores do not select epochs or recipes. Set `RUN_FINAL_TEST=False` while developing a recipe.
+
+The existing scratch ViT-Large continuation is a separate experiment. Preparing this repository does not change or start that run. Unequal budgets, pretrained data, and the CNN architecture change must be considered in comparisons; improved RDN performance is not guaranteed.
+
+## Command line, resume, and outputs
 
 ```bash
-# Run all ten pretrained references sequentially (potentially a long GPU job):
+python train.py --model resnet101 --data-root "$RDN_DATA_ROOT"
+python train.py --model vmamba_base --data-root "$RDN_DATA_ROOT" --weights-dir "$RDN_PRETRAINED_DIR"
+python train.py --model vit_large --print-config
+# Sequential execution of the six selected models; starts real training:
 python tools/run_all.py --data-root "$RDN_DATA_ROOT"
-# Or start with a smaller group:
-python tools/run_all.py --data-root "$RDN_DATA_ROOT" --models resnet50 vit_tiny vit_small
-# Inspect settings without loading data or weights:
-python train.py --model vit_tiny --print-config
-```
-
-## Models and initial weights
-
-| Key | Initialization | Physical batch / accumulation | Comparison note |
-| --- | --- | --- | --- |
-| `cnn_resnet18` | `resnet18.a1_in1k` | 32 / 4 | Additional CNN reference; not the original custom CNN |
-| `vit_tiny` | `vit_tiny_patch16_224.augreg_in21k_ft_in1k` | 16 / 8 | Weights mapped to original grayscale ViT-Tiny |
-| `resnet50` | `resnet50.a1_in1k` | 16 / 8 | Same architecture family as scratch |
-| `resnet101` | `resnet101.a1h_in1k` | 8 / 16 | Same architecture family as scratch |
-| `resnet152` | `resnet152.a1h_in1k` | 4 / 32 | Same architecture family as scratch |
-| `vit_small` | `vit_small_patch16_224.augreg_in21k_ft_in1k` | 16 / 8 | ImageNet-21k pretraining, ImageNet-1k fine-tuned source |
-| `vit_base` | `vit_base_patch16_224.augreg_in21k_ft_in1k` | 4 / 32 | Same source family |
-| `vit_large` | `vit_large_patch16_224.augreg_in21k_ft_in1k` | 1 / 128 | Activation checkpointing; profile memory first |
-| `dinov2` | `vit_small_patch14_dinov2.lvd142m` | 8 / 16 | Additional self-supervised pretrained reference |
-| `vmamba` | official `vmamba_tiny_s1l8` ImageNet weights | 1 / 128 | CUDA scan and activation checkpointing |
-| `cnn` | User-supplied original trained checkpoint | 32 / 4 | Optional continuation only; excluded from pretrained `run_all` |
-
-For grayscale ViT-Tiny, all pretrained backbone tensors are mapped to the original `nn.MultiheadAttention` architecture. RGB patch kernels are summed to obtain the one-channel projection, and pretrained LayerNorm epsilon is retained. The task head is new. A synthetic equivalence test checks that its evaluation outputs match the corresponding RGB model with replicated grayscale inputs. No incompatible parameters are silently skipped.
-
-Weight downloads occur on the first new run. timm model IDs and a SHA-256 of the actual initial state (including the seeded task head) are saved in `model_info.json`. VMamba additionally requires an exact checkpoint hash. Download failures stop the run; they never cause a random-initialization fallback. Resume/evaluation-only mode rebuilds the architecture and loads the saved checkpoint without re-downloading pretrained weights.
-
-## Training recipe and comparison controls
-
-- Data: 111,000 compact layouts; **97,200 train / 10,800 validation / 3,000 held-out test**. Class 0: first `argmax(compact_response) < 83`; class 1: `>= 83`. This is not an exact reproduction of raw-reflection 8.3 GHz labels.
-- Defaults: seed 42; maximum 20 epochs; early-stopping patience 5; two warmup epochs followed by cosine decay. No inherited five-epoch caps.
-- AdamW: backbone LR `1e-5`, head LR `1e-4`, weight decay `0.05` with no decay for bias/norm/token embeddings. These are starting recipes, not validated optimal settings.
-- Effective batch 128 via sample-weighted accumulation, including partial windows. Physical batches differ; BatchNorm statistics therefore differ too. Smaller batches are starting points for the 8 GB GPU, not a guarantee that every model fits.
-- All layers train. No feature caching, frozen-head-only training, random crop, flip, rotation or erasing. The full geometry is resized. Input normalization follows the weight family; interpolation and channel count are explicitly logged. Most timm models use bicubic resizing; custom CNN, grayscale ViT-Tiny and VMamba retain bilinear resizing.
-- The checkpoint with **minimum validation loss** is selected. Held-out test evaluation happens only after selection; `--no-test` disables it. No test result influences training or selection.
-- Every validation epoch logs balanced accuracy, macro-F1 and predicted class counts. A one-class-prediction warning makes collapse visible; it does not change the recipe or choose a checkpoint using test data. Final metrics include accuracy, balanced accuracy, macro-F1, ROC-AUC and a confusion matrix.
-
-Compare with the saved scratch baselines, accounting for their unequal epoch budgets and any architecture/preprocessing differences. These runs test transfer; improvement is not guaranteed.
-
-## Resume, evaluation, and outputs
-
-Outputs are separate from the old experiment: `results/<model>/seed_42_pretrained_finetune_all_layers_epochs_20/`.
-
-Each run saves configuration and data identity, source code hashes, actual initial-weight identity, total/trainable parameter counts, environment, last/best checkpoints, optimizer/scheduler/scaler/RNG state, epoch history, train/validation metrics and predictions, and accuracy/loss plots in PNG. Optional vector PDF export is available through `lab_code.runtime.plot_history(..., export_pdf=True)`. Final evaluation adds `test_metrics.json`, `test_predictions.csv`, and `test_confusion_matrix.png`.
-
-Re-running the same command resumes at the last complete epoch. An interrupted partial epoch is repeated. Completed runs load the validation-selected checkpoint. Changing settings, data or source code requires a **new run name**. Use `--eval-only` with the same model/config/run name to load a completed run. Test outputs are cached against the selected checkpoint hash.
-
-```bash
-# Explicit new recipe; preserve effective batch 128 when reducing the physical batch:
-python train.py --model vit_base --data-root "$RDN_DATA_ROOT" \
-  --batch-size 2 --accumulation-steps 64 --run-name seed42_batch2_finetune
 python tools/summarize_results.py
-
-# Optional original-CNN continuation (not ImageNet pretraining):
-python train.py --model cnn --data-root "$RDN_DATA_ROOT" \
-  --checkpoint /path/to/original/cnn/best_checkpoint.pt
 ```
 
-Checkpoint continuation loads model tensors strictly, starts a new optimizer/schedule, and records the source checkpoint hash/epoch. It does not resume the old optimizer or copy old reported scores. Continuation of other architectures is available via `--initialization checkpoint --checkpoint ...` when the exact two-class state dict matches.
+Outputs use `results/<model>/seed_42_pretrained_finetune_all_layers_epochs_20/`. Each run records its configuration, data/source identities, exact initialized-state hash, total/trainable parameters, and software environment. It saves best/last checkpoints, optimizer/scheduler/scaler/RNG state, history, train/validation metrics and predictions, and plots. Optional vector plots are supported by `lab_code.runtime.plot_history(..., export_pdf=True)`.
 
-## VMamba setup
+An interrupted partial epoch is repeated; completed epochs resume from the last checkpoint. A completed run loads its validation-selected checkpoint. Changes to settings, data, or source code require a **new run name**. `--eval-only` loads a completed run, and `--no-test` disables held-out evaluation. Data, environments, pretrained weights, and trained checkpoints remain outside Git.
 
-Reuse the working `selective_scan_cuda` installation from the scratch environment. Check both forward and backward before fine-tuning:
+## VMamba-Base weights and kernel
+
+The loader strictly checks the complete official pretrained backbone before replacing the original classifier. File: `vmamba_base_s2l15_imagenet.pth`; SHA-256:
+
+```text
+61aec3c5a67cc351dbb8a04c0a3ff76de213e01ff387cc349f94e497ce377452
+```
+
+The already downloaded file can be reused through `RDN_PRETRAINED_DIR` or `--weights-dir`. Otherwise it is downloaded into ignored `weights/` from the [official VMamba-Base release](https://github.com/MzeroMiko/VMamba/releases/download/%23v2cls/vssm_base_0229_ckpt_epoch_237.pth).
+
+Reuse the working Mamba-1 `selective_scan_cuda` extension and verify forward/backward before training:
 
 ```bash
 python tools/preflight.py --data-root "$RDN_DATA_ROOT" --vmamba-kernel
-# Reuse the already verified original ImageNet file if present:
-python train.py --model vmamba --data-root "$RDN_DATA_ROOT" \
-  --weights-dir /path/to/original/package/pretrained
 ```
 
-Otherwise the official checkpoint is downloaded into ignored `weights/` and checked against SHA-256 `d855b57224a652bc692804932f88dc3a39b9028e64be99f745a7fd6792ca672a`.
+A new environment needs the [official Mamba installation/build instructions](https://github.com/state-spaces/mamba/tree/v2.2.6.post3) and a matching CUDA/PyTorch compiler setup. An unrelated Mamba-2 kernel is insufficient. The vendored VMamba source retains its MIT notice under `licenses/`.
 
-For a new CUDA environment, follow the [official Mamba installation/build instructions](https://github.com/state-spaces/mamba/tree/v2.2.6.post3) and the already-working toolchain notes in the old RDN package. The vendored implementation uses the Mamba-1 `selective_scan_cuda` interface; installing an unrelated Mamba-2 kernel is insufficient. Its source and MIT notice are retained in `licenses/VMamba_LICENSE.txt`. GPU/kernel execution and memory capacity must be checked on the target machine.
-
-## Checks and provenance
+## Validation and provenance
 
 ```bash
 MPLBACKEND=Agg python -m unittest discover -s tests -v
 python tools/verify_models.py --data-root "$RDN_DATA_ROOT"
-# Optional real published-weight loading check; downloads the small ViT-Tiny weights:
-python tools/verify_models.py --pretrained-tiny
+# Optional published EfficientNet weights and synthetic CPU forward check:
+python tools/verify_models.py --pretrained-cnn
 ```
 
-Tests use synthetic data and temporary output folders. See `VERIFICATION.json` for checks actually completed locally. No research training or held-out model evaluation is claimed here.
+`VERIFICATION.json` and `VERIFICATION_PRETRAINED.json` describe checks actually performed. Synthetic checks are not research training or held-out evaluation. GPU profiling and convergence remain to be measured when the GPU is available.
 
-The data/runtime and original custom architectures derive from commit `380a36849e292526cdd99a928e123c3abae4d755` of the scratch repository. The original dataset and model checkpoint files remain outside this code repository. Third-party model weights retain their upstream licenses; weights are not redistributed here.
+The original data/runtime and custom architectures derive from scratch commit `380a36849e292526cdd99a928e123c3abae4d755`. Third-party weights retain their upstream licenses and are not redistributed here.
 
-Primary references: [PyTorch fine-tuning tutorial](https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html), [timm](https://github.com/huggingface/pytorch-image-models), [ViT AugReg weights](https://huggingface.co/timm/vit_tiny_patch16_224.augreg_in21k_ft_in1k), [DINOv2 weights](https://huggingface.co/timm/vit_small_patch14_dinov2.lvd142m), [VMamba](https://github.com/MzeroMiko/VMamba).
+References: [PyTorch transfer-learning tutorial](https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html), [timm model library](https://github.com/huggingface/pytorch-image-models), [ViT AugReg models](https://huggingface.co/timm/vit_small_patch16_224.augreg_in21k_ft_in1k), [VMamba](https://github.com/MzeroMiko/VMamba).

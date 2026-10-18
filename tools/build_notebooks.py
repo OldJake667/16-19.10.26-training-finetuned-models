@@ -34,7 +34,7 @@ from lab_code.experiment import get_config, run_experiment
 
 if __name__ == '__main__':
     folder = ROOT / 'notebooks'; folder.mkdir(exist_ok=True)
-    for i, key in enumerate((*DEFAULT_MODELS, 'cnn'), 1):
+    for i, key in enumerate(DEFAULT_MODELS, 1):
         continuation = key == 'cnn'
         header = ('Original custom CNN: optional checkpoint continuation' if continuation else key + ': published pretrained weights, all layers fine-tuned')
         intro = ('This custom architecture has no published ImageNet checkpoint. Supply the original '
@@ -43,7 +43,7 @@ if __name__ == '__main__':
                  'All layers train. The two-class head is new; validation loss selects the checkpoint. '
                  'No accuracy results have been generated for this package.')
         config = f'''MODEL = {key!r}
-# Set this to the EXISTING RDN package root on the lab machine.
+# Set this to the existing RDN package root, or use the project launcher.
 DATA_ROOT = os.environ.get('RDN_DATA_ROOT', '')
 # Optional: old package's pretrained directory for the verified VMamba weights.
 WEIGHTS_DIR = os.environ.get('RDN_PRETRAINED_DIR')
@@ -69,7 +69,7 @@ else:
 '''
         cells = [nbf.v4.new_markdown_cell('# ' + header + '\n\n' + intro), code(imports, 'imports'),
                  code(config, 'configuration'), nbf.v4.new_markdown_cell('## Run\n\nReview DATA_ROOT and the configuration before Run All. Completed runs are loaded; interrupted runs resume at the last complete epoch. Changing the configuration requires a new run name. The final test is evaluated only after validation-based checkpoint selection.'),
-                 code(launch, 'training_launch'), code("if 'result' in globals():\n    print('Saved to:', result['folder'])\n    print(result['test_metrics'])", 'results')]
+                 code(launch, 'training_launch'), code("if 'result' in globals():\n    from lab_code.runtime import plot_history\n    print('Saved to:', result['folder'])\n    print(result['test_metrics'])\n    plot_history(result['folder'], show=True)", 'results')]
         write(folder / (f'{i:02d}_{key}.ipynb' if not continuation else '99_custom_cnn_checkpoint_continuation.ipynb'), cells, key)
     write(folder / '00_environment_and_data_check.ipynb', [nbf.v4.new_markdown_cell('# Fine-tuning preflight\n\nChecks the fixed data and GPU. It does not train a classifier or evaluate the held-out test set.'), code(imports, 'imports'),
           code("DATA_ROOT = os.environ.get('RDN_DATA_ROOT', '')\nCHECK_VMAMBA_KERNEL = False\nREQUIRE_CUDA = True", 'configuration'),

@@ -1,0 +1,16 @@
+{
+  "model": "vmamba_base",
+  "architecture": "vmamba_base_s2l15",
+  "all_parameters_trainable": true,
+  "total_parameters": 87534850,
+  "initialization": "ImageNet-1K pretrained",
+  "strict_checkpoint_load_passed": true,
+  "provenance": {
+    "source": "https://github.com/MzeroMiko/VMamba/releases/download/%23v2cls/vssm_base_0229_ckpt_epoch_237.pth",
+    "expected_checkpoint_sha256": "61aec3c5a67cc351dbb8a04c0a3ff76de213e01ff387cc349f94e497ce377452",
+    "checkpoint_sha256": "61aec3c5a67cc351dbb8a04c0a3ff76de213e01ff387cc349f94e497ce377452",
+    "initial_state_sha256": "cada74dae61aee26c3423b75463df78d991e4fa504befdae242a7fa570ebb77f"
+  },
+  "gpu_verified": false,
+  "research_training_executed": false
+}

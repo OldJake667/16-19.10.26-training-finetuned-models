@@ -12,8 +12,8 @@ from .runtime import (atomic_json, build_training_loaders, config_identity, eval
                       fit, load_full_data, seed_everything, select_device, sha256_file)
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_MODELS = ('cnn_resnet18', 'vit_tiny', 'resnet50', 'resnet101', 'resnet152',
-                  'vit_small', 'vit_base', 'vit_large', 'dinov2', 'vmamba')
+DEFAULT_MODELS = ('cnn_efficientnet_b0', 'resnet101', 'resnet152',
+                  'vit_small', 'vit_large', 'vmamba_base')
 
 
 def get_config(model_key, overrides=None):
@@ -53,8 +53,8 @@ def run_experiment(model_key, *, data_root=None, overrides=None, run_name=None,
     device = select_device(require_cuda=require_cuda)
     if device.type == 'cpu':
         config['precision'] = 'fp32'
-    if model_key == 'vmamba' and device.type != 'cuda':
-        raise RuntimeError('Full VMamba training requires the lab CUDA environment and fast scan kernel')
+    if model_key == 'vmamba_base' and device.type != 'cuda':
+        raise RuntimeError('Full VMamba training requires CUDA and the fast scan kernel')
     name = run_name or (f"seed_{config['seed']}_{config['initialization']}_finetune_all_layers_"
                         f"epochs_{config['max_epochs']}")
     if not re.fullmatch(r'[A-Za-z0-9_.-]+', name) or name in ('.', '..'):

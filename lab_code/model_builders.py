@@ -12,8 +12,8 @@ from .runtime import FrozenClassifier, sha256_file
 from .scratch_models import ScratchCNN, VisionTransformerTiny
 
 VMAMBA_URL = ('https://github.com/MzeroMiko/VMamba/releases/download/'
-              '%23v2cls/vssm1_tiny_0230s_ckpt_epoch_264.pth')
-VMAMBA_SHA256 = 'd855b57224a652bc692804932f88dc3a39b9028e64be99f745a7fd6792ca672a'
+              '%23v2cls/vssm_base_0229_ckpt_epoch_237.pth')
+VMAMBA_SHA256 = '61aec3c5a67cc351dbb8a04c0a3ff76de213e01ff387cc349f94e497ce377452'
 
 
 def state_digest(model):
@@ -65,10 +65,12 @@ def _vmamba(config, load_weights, weights_dir):
     from . import vmamba_official as official
     if config['require_fast_vmamba'] and not official.WITH_SELECTIVESCAN_MAMBA:
         raise RuntimeError('VMamba needs selective_scan_cuda. Run the VMamba preflight; see README.')
-    backbone = official.vmamba_tiny_s1l8(pretrained=False)
+    if config['architecture'] != 'vmamba_base_s2l15':
+        raise ValueError('This experiment requires the VMamba-Base s2l15 architecture')
+    backbone = official.vmamba_base_s2l15(pretrained=False)
     provenance = {'source': VMAMBA_URL, 'expected_checkpoint_sha256': VMAMBA_SHA256}
     if load_weights:
-        path = Path(weights_dir) / 'vmamba_tiny_imagenet.pth'
+        path = Path(weights_dir) / 'vmamba_base_s2l15_imagenet.pth'
         path.parent.mkdir(parents=True, exist_ok=True)
         if not path.is_file():
             temporary = path.with_suffix('.downloading')
@@ -98,7 +100,7 @@ def build_model(config, *, load_weights=True, checkpoint=None, weights_dir='weig
         raise ValueError('This experiment fine-tunes all layers; train_backbone must be true')
     if key == 'cnn' and mode != 'checkpoint':
         raise ValueError('The custom CNN has no published pretrained weights. Supply its checkpoint '
-                         'or choose cnn_resnet18, the separately labelled pretrained CNN reference.')
+                         'or choose cnn_efficientnet_b0, the pretrained CNN reference.')
     use_pretrained = mode == 'pretrained' and load_weights
     if key == 'cnn':
         model, provenance = ScratchCNN(classes=2), {'source': 'user-supplied custom CNN checkpoint'}
@@ -115,7 +117,7 @@ def build_model(config, *, load_weights=True, checkpoint=None, weights_dir='weig
                                        img_size=config['image_size'])
             model = transfer_tiny(source, model)
             del source
-    elif key == 'vmamba':
+    elif key == 'vmamba_base':
         model, provenance = _vmamba(config, use_pretrained, weights_dir)
     else:
         kwargs = {'pretrained': use_pretrained, 'num_classes': 0 if key == 'dinov2' else 2}

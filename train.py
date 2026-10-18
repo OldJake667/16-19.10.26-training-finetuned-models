@@ -6,7 +6,7 @@ from lab_code.experiment import get_config, run_experiment, DEFAULT_MODELS
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--model', choices=(*DEFAULT_MODELS, 'cnn'), required=True)
+    parser.add_argument('--model', choices=DEFAULT_MODELS, required=True)
     parser.add_argument('--data-root', help='Existing RDN package root; or set RDN_DATA_ROOT')
     parser.add_argument('--run-name')
     parser.add_argument('--checkpoint', help='Existing trained model for checkpoint continuation')
