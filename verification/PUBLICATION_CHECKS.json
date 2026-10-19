@@ -1,0 +1,13 @@
+{
+  "checked_utc": "2026-10-19T00:45:26.398715+00:00",
+  "self_contained_notebooks": 10,
+  "completed_published_runs": 3,
+  "in_progress_published_runs": 1,
+  "isolated_published_tree_checks_passed": true,
+  "markdown_links_valid": true,
+  "legacy_notebooks_and_preparation_helpers_excluded_from_git": true,
+  "local_original_files_retained": true,
+  "checkpoint_or_dataset_files_published": false,
+  "credential_scan_passed": true,
+  "training_or_dataset_inference_executed": false
+}

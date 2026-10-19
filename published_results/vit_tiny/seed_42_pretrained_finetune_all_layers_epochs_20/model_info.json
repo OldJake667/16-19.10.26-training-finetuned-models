@@ -1,0 +1,19 @@
+{
+  "architecture": "vit_tiny_patch16_224.augreg_in21k_ft_in1k",
+  "model": "vit_tiny",
+  "total_parameters": 5426498,
+  "trainable_parameters": 5426498,
+  "training_mode": "all_layers_finetune",
+  "pretrained": true,
+  "initialization_provenance": {
+    "source": "timm/vit_tiny_patch16_224.augreg_in21k_ft_in1k",
+    "rgb_to_grayscale": "sum projection kernels",
+    "initial_state_sha256": "b1c94845215cd62cae9e9cfb7cd81161af5e5d4e73f371a6fe137b78ed4433a0"
+  },
+  "input_size": 224,
+  "input_channels": 1,
+  "normalization": "half",
+  "interpolation": "bilinear",
+  "physical_batch_size": 16,
+  "effective_batch_size": 128
+}

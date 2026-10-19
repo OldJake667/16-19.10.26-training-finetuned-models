@@ -23,3 +23,15 @@ feature_cache/
 /standalone_notebooks/*.ipynb
 !/standalone_notebooks/*_finetuned.ipynb
 !/standalone_notebooks/00_environment_and_data_check.ipynb
+
+# Local preparation and historical wrappers are retained on disk only.
+/notebooks/
+/archived_notebooks/
+/lab_code/
+/tools/
+/tests/
+/train.py
+/MODEL_CONFIGS.json
+/PACKAGE_MANIFEST.json
+/PRETRAINING_OPTIONS.md
+/VERIFICATION*.json

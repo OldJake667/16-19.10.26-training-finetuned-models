@@ -1,0 +1,12 @@
+{
+  "snapshot_utc": "2026-10-19T00:43:01.215905+00:00",
+  "model": "resnet50",
+  "status": "completed",
+  "epochs_completed": 15,
+  "max_epochs": 20,
+  "selected_epoch": 8,
+  "final_test_available": true,
+  "source_run": "results/resnet50/seed_42_pretrained_finetune_all_layers_epochs_20",
+  "plots_generated_from_saved_history": true,
+  "checkpoint_weights_included": false
+}

@@ -1,0 +1,45 @@
+{
+  "config": {
+    "seed": 42,
+    "max_epochs": 20,
+    "early_stopping_patience": 7,
+    "minimum_improvement": 0.0,
+    "optimizer": "AdamW",
+    "learning_rate": 1e-05,
+    "head_learning_rate": 0.0001,
+    "weight_decay": 0.05,
+    "label_smoothing": 0.0,
+    "warmup_epochs": 2,
+    "minimum_lr_ratio": 0.01,
+    "gradient_clip_norm": 1.0,
+    "precision": "bf16",
+    "num_workers": 0,
+    "resume": true,
+    "image_size": 224,
+    "channels": 3,
+    "normalization": "imagenet",
+    "interpolation": "bicubic",
+    "train_backbone": true,
+    "require_fast_vmamba": true,
+    "activation_checkpointing": false,
+    "batch_size": 8,
+    "accumulation_steps": 16,
+    "feature_batch_size": 4,
+    "initialization": "pretrained",
+    "model": "resnet101",
+    "architecture": "resnet101.a1h_in1k",
+    "notes": ""
+  },
+  "data": {
+    "data/images.npy": "4d9705401d6c2ca8c62da145506d5c2839c8a7285afd098b9c2fd575510df4da",
+    "data/labels.npy": "8f58d927ca4199d703f6e8ada05597a86c50d86126c40ff94e878f7e58239638",
+    "data/spectra.npy": "87168b2152ee172511a28da89648dec7366dece8e03310f91324a690819f62c9",
+    "data/full_manifest.csv": "8b70f0ba4d746e9f504dd89ee03984602f725bfa9e3f359a1e82b46a9f2b0652",
+    "target": "compact_response_argmax_ge_83_first_maximum",
+    "initialization": {
+      "source": "timm/resnet101.a1h_in1k",
+      "initial_state_sha256": "d31b14edd579cbf83429b42d10eb6b00212ef6f34caa469f4cf3a895ca873130"
+    },
+    "notebook_code_sha256": "80108d54b299f451e3125299ab3ca694e6b78f992b266ac10317a3b4145c87ea"
+  }
+}

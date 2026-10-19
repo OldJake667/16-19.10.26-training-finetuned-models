@@ -1,0 +1,53 @@
+{
+  "config": {
+    "seed": 42,
+    "max_epochs": 20,
+    "early_stopping_patience": 7,
+    "minimum_improvement": 0.0,
+    "optimizer": "AdamW",
+    "learning_rate": 1e-05,
+    "head_learning_rate": 0.0001,
+    "weight_decay": 0.05,
+    "label_smoothing": 0.0,
+    "warmup_epochs": 2,
+    "minimum_lr_ratio": 0.01,
+    "gradient_clip_norm": 1.0,
+    "precision": "bf16",
+    "num_workers": 0,
+    "resume": true,
+    "image_size": 224,
+    "channels": 3,
+    "normalization": "imagenet",
+    "interpolation": "bicubic",
+    "train_backbone": true,
+    "require_fast_vmamba": true,
+    "activation_checkpointing": false,
+    "batch_size": 16,
+    "accumulation_steps": 8,
+    "feature_batch_size": 4,
+    "initialization": "pretrained",
+    "model": "cnn_finetuned",
+    "architecture": "efficientnet_b0.ra_in1k",
+    "notes": "CNN fine-tuned: ImageNet-pretrained EfficientNet-B0; a different architecture from the original custom CNN"
+  },
+  "data": {
+    "data/images.npy": "4d9705401d6c2ca8c62da145506d5c2839c8a7285afd098b9c2fd575510df4da",
+    "data/labels.npy": "8f58d927ca4199d703f6e8ada05597a86c50d86126c40ff94e878f7e58239638",
+    "data/spectra.npy": "87168b2152ee172511a28da89648dec7366dece8e03310f91324a690819f62c9",
+    "data/full_manifest.csv": "8b70f0ba4d746e9f504dd89ee03984602f725bfa9e3f359a1e82b46a9f2b0652",
+    "target": "compact_response_argmax_ge_83_first_maximum",
+    "support_code_sha256": {
+      "scratch_models.py": "c9df4434609e990e80e95664bd99d41884782ac49e2478773a3db06152282058",
+      "__init__.py": "da4bee4a918c42169b16c1ba4bd45bd506122d291df8201de4aaeda3e2aa805c",
+      "model_builders.py": "bf86e9fa2b9ad0d0d671b662a672f9b8aeb448af9c60fd38b4d53a6f8ce89e44",
+      "experiment.py": "21fb303910c5a10f80e2feeed3ef4d7d522f94efb476c7074746511d4e806bd2",
+      "runtime.py": "040f78e83d396ba14353d8e90e7ffd1267c9daf46e8b4bd634ea01e1d2f9e967",
+      "vmamba_official.py": "1c0714169f785df1c563693f2ede4535870329d95a822c9335131b7dfab9c17a"
+    },
+    "model_configs_sha256": "db6294834b9aae5487965981616fac63b8ea08df13cbd779a8aaa7e0d5de7d7d",
+    "initialization": {
+      "source": "timm/efficientnet_b0.ra_in1k",
+      "initial_state_sha256": "a8e80f62803c2c52795f8b7caf4405e96e8698fbca230ee983f02c88ab72a21c"
+    }
+  }
+}

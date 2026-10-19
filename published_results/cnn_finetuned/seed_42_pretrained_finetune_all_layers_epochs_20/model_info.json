@@ -1,0 +1,18 @@
+{
+  "architecture": "efficientnet_b0.ra_in1k",
+  "model": "cnn_finetuned",
+  "total_parameters": 4010110,
+  "trainable_parameters": 4010110,
+  "training_mode": "all_layers_finetune",
+  "pretrained": true,
+  "initialization_provenance": {
+    "source": "timm/efficientnet_b0.ra_in1k",
+    "initial_state_sha256": "a8e80f62803c2c52795f8b7caf4405e96e8698fbca230ee983f02c88ab72a21c"
+  },
+  "input_size": 224,
+  "input_channels": 3,
+  "normalization": "imagenet",
+  "interpolation": "bicubic",
+  "physical_batch_size": 16,
+  "effective_batch_size": 128
+}
