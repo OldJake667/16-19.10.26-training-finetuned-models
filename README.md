@@ -50,18 +50,18 @@ Training/validation loss and accuracy are plotted by epoch. Balanced accuracy, m
 
 See the [results table](published_results/README.md), [CSV summary](published_results/summary.csv), and [JSON summary](published_results/summary.json). Completed results and snapshots of ongoing runs are labeled separately. Empty test fields mean evaluation is not yet available. These are single-seed results (seed 42).
 
-Completed runs currently include CNN fine-tuned, ViT-Tiny, and ResNet50. ResNet101 has a saved in-progress snapshot. The remaining model notebooks are prepared; no completed results are claimed for them. Histories and result snapshots are updated when explicitly published, rather than automatically during training.
+Six fine-tuning runs are complete: CNN fine-tuned, ViT-Tiny, ResNet50, ResNet101, ResNet152, and VMamba-Base. ViT-Small, ViT-Base, and ViT-Large are prepared; no completed results are claimed for them. Saved execution outputs from the self-contained ResNet101, ResNet152, and VMamba-Base notebooks are included with their run artifacts. Histories and result snapshots update when explicitly published, rather than automatically during training.
 
 ## Run in Jupyter
 
 On the configured computer:
 
 ```bash
-cd /home/murat/Desktop/fine_tuned_models
+cd "$HOME/Desktop/Olzhas Models/fine_tuned_models"
 ./start_jupyter.sh
 ```
 
-Open [00_environment_and_data_check.ipynb](standalone_notebooks/00_environment_and_data_check.ipynb), then one model notebook. Review the settings cell and use **Restart Kernel and Run All Cells**. Run one GPU model at a time and shut down its kernel before starting another. The launcher opens `standalone_notebooks/`.
+Open [00_environment_and_data_check.ipynb](standalone_notebooks/00_environment_and_data_check.ipynb), then one model notebook. Review the settings cell and use **Restart Kernel and Run All Cells**. Run one GPU model at a time and shut down its kernel before starting another. The launcher opens `standalone_notebooks/`. Local model projects are now grouped under `Desktop/Olzhas Models/`; older Desktop shortcuts may still support an already-open Jupyter session.
 
 For a fresh clone, create a Python environment with a compatible CUDA [PyTorch/torchvision installation](https://pytorch.org/get-started/locally/), then:
 

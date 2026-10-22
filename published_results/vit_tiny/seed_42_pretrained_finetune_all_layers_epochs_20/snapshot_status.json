@@ -1,5 +1,5 @@
 {
-  "snapshot_utc": "2026-10-19T00:43:01.215905+00:00",
+  "snapshot_utc": "2026-10-22T21:56:54.819480+00:00",
   "model": "vit_tiny",
   "status": "completed",
   "epochs_completed": 14,
@@ -8,5 +8,6 @@
   "final_test_available": true,
   "source_run": "results/vit_tiny/seed_42_pretrained_finetune_all_layers_epochs_20",
   "plots_generated_from_saved_history": true,
-  "checkpoint_weights_included": false
+  "checkpoint_weights_included": false,
+  "executed_self_contained_notebook": null
 }

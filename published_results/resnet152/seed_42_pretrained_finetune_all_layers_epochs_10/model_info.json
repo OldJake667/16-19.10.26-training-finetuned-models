@@ -1,0 +1,18 @@
+{
+  "architecture": "resnet152.a1h_in1k",
+  "model": "resnet152",
+  "total_parameters": 58147906,
+  "trainable_parameters": 58147906,
+  "training_mode": "all_layers_finetune",
+  "pretrained": true,
+  "initialization_provenance": {
+    "source": "timm/resnet152.a1h_in1k",
+    "initial_state_sha256": "be4361efe505ddfade77c899e73b55fe83acb01c3b6f70a9b36508d76f04a5d0"
+  },
+  "input_size": 224,
+  "input_channels": 3,
+  "normalization": "imagenet",
+  "interpolation": "bicubic",
+  "physical_batch_size": 4,
+  "effective_batch_size": 128
+}

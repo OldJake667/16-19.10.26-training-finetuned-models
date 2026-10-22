@@ -1,0 +1,13 @@
+{
+  "snapshot_utc": "2026-10-22T21:56:54.819480+00:00",
+  "model": "vmamba_base",
+  "status": "completed",
+  "epochs_completed": 10,
+  "max_epochs": 10,
+  "selected_epoch": 9,
+  "final_test_available": true,
+  "source_run": "results/vmamba_base/seed_42_pretrained_finetune_all_layers_epochs_10",
+  "plots_generated_from_saved_history": true,
+  "checkpoint_weights_included": false,
+  "executed_self_contained_notebook": "09_vmamba_base_finetuned.ipynb"
+}

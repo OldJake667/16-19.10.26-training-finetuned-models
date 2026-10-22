@@ -1,0 +1,29 @@
+{
+  "existing_implementation": {
+    "training_warnings": [
+      "torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants."
+    ],
+    "validation_warnings": [
+      "None of the inputs have requires_grad=True. Gradients will be None",
+      "torch.utils.checkpoint: the use_reentrant parameter should be passed explicitly. Starting in PyTorch 2.9, calling checkpoint without use_reentrant will raise an exception. use_reentrant=False is recommended, but if you need to preserve the current default behavior, you can pass use_reentrant=True. Refer to docs for more details on the differences between the two variants."
+    ],
+    "trainable_parameters_without_gradient": [],
+    "all_gradients_finite": true
+  },
+  "corrected_implementation": {
+    "training_warnings": [],
+    "validation_warnings": [],
+    "trainable_parameters_without_gradient": [],
+    "all_gradients_finite": true
+  },
+  "reduced_model_gradients_match": true,
+  "actual_saved_epoch": 4,
+  "actual_backbone_parameter_changes": {
+    "patch_embed.0.weight": 0.0016313642263412476,
+    "layers.0.blocks.0.op.in_proj.weight": 0.004933010786771774,
+    "layers.3.blocks.1.op.in_proj.weight": 0.0034759193658828735
+  },
+  "diagnostic_scope": "Reduced CPU model plus selected parameter changes in the actual saved epoch-4 checkpoint",
+  "correction_applied_to_training_notebook": false,
+  "note": "The proposed checkpoint-call cleanup was tested separately. The completed 10-epoch research run retains its original implementation."
+}

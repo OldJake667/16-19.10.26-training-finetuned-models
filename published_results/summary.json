@@ -1,5 +1,5 @@
 {
-  "snapshot_utc": "2026-10-19T00:43:01.215905+00:00",
+  "snapshot_utc": "2026-10-22T21:56:54.819480+00:00",
   "runs": [
     {
       "model": "cnn_finetuned",
@@ -18,18 +18,33 @@
     },
     {
       "model": "resnet101",
-      "status": "in_progress",
-      "epochs_completed": 9,
+      "status": "completed",
+      "epochs_completed": 20,
       "max_epochs": 20,
-      "selected_epoch": null,
-      "train_accuracy_selected": null,
-      "validation_accuracy_selected": null,
-      "latest_validation_accuracy": 0.5319444444444444,
-      "test_accuracy": null,
-      "test_balanced_accuracy": null,
-      "test_macro_f1": null,
+      "selected_epoch": 19,
+      "train_accuracy_selected": 0.549320987654321,
+      "validation_accuracy_selected": 0.5320370370370371,
+      "latest_validation_accuracy": 0.5342592592592592,
+      "test_accuracy": 0.531,
+      "test_balanced_accuracy": 0.5287931573709477,
+      "test_macro_f1": 0.5274230651803501,
       "total_parameters": 42504258,
       "run_directory": "published_results/resnet101/seed_42_pretrained_finetune_all_layers_epochs_20"
+    },
+    {
+      "model": "resnet152",
+      "status": "completed",
+      "epochs_completed": 10,
+      "max_epochs": 10,
+      "selected_epoch": 10,
+      "train_accuracy_selected": 0.5394341563786008,
+      "validation_accuracy_selected": 0.5325,
+      "latest_validation_accuracy": 0.5325,
+      "test_accuracy": 0.5373333333333333,
+      "test_balanced_accuracy": 0.5324249452017559,
+      "test_macro_f1": 0.5230021994134897,
+      "total_parameters": 58147906,
+      "run_directory": "published_results/resnet152/seed_42_pretrained_finetune_all_layers_epochs_10"
     },
     {
       "model": "resnet50",
@@ -60,6 +75,21 @@
       "test_macro_f1": 0.5635762196931677,
       "total_parameters": 5426498,
       "run_directory": "published_results/vit_tiny/seed_42_pretrained_finetune_all_layers_epochs_20"
+    },
+    {
+      "model": "vmamba_base",
+      "status": "completed",
+      "epochs_completed": 10,
+      "max_epochs": 10,
+      "selected_epoch": 9,
+      "train_accuracy_selected": 0.6873045267489712,
+      "validation_accuracy_selected": 0.6667592592592593,
+      "latest_validation_accuracy": 0.6672222222222223,
+      "test_accuracy": 0.6826666666666666,
+      "test_balanced_accuracy": 0.6863903272145853,
+      "test_macro_f1": 0.679631567328522,
+      "total_parameters": 87534850,
+      "run_directory": "published_results/vmamba_base/seed_42_pretrained_finetune_all_layers_epochs_10"
     }
   ]
 }

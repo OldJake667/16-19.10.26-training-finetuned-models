@@ -1,0 +1,47 @@
+{
+  "config": {
+    "seed": 42,
+    "max_epochs": 10,
+    "early_stopping_patience": 7,
+    "minimum_improvement": 0.0,
+    "optimizer": "AdamW",
+    "learning_rate": 1e-05,
+    "head_learning_rate": 0.0001,
+    "weight_decay": 0.05,
+    "label_smoothing": 0.0,
+    "warmup_epochs": 2,
+    "minimum_lr_ratio": 0.01,
+    "gradient_clip_norm": 1.0,
+    "precision": "bf16",
+    "num_workers": 0,
+    "resume": true,
+    "image_size": 224,
+    "channels": 3,
+    "normalization": "imagenet",
+    "interpolation": "bilinear",
+    "train_backbone": true,
+    "require_fast_vmamba": true,
+    "activation_checkpointing": true,
+    "batch_size": 1,
+    "accumulation_steps": 128,
+    "feature_batch_size": 4,
+    "initialization": "pretrained",
+    "model": "vmamba_base",
+    "architecture": "vmamba_base_s2l15",
+    "notes": "Official ImageNet-1K pretrained VMamba-Base s2l15; all backbone layers train"
+  },
+  "data": {
+    "data/images.npy": "4d9705401d6c2ca8c62da145506d5c2839c8a7285afd098b9c2fd575510df4da",
+    "data/labels.npy": "8f58d927ca4199d703f6e8ada05597a86c50d86126c40ff94e878f7e58239638",
+    "data/spectra.npy": "87168b2152ee172511a28da89648dec7366dece8e03310f91324a690819f62c9",
+    "data/full_manifest.csv": "8b70f0ba4d746e9f504dd89ee03984602f725bfa9e3f359a1e82b46a9f2b0652",
+    "target": "compact_response_argmax_ge_83_first_maximum",
+    "initialization": {
+      "source": "https://github.com/MzeroMiko/VMamba/releases/download/%23v2cls/vssm_base_0229_ckpt_epoch_237.pth",
+      "expected_checkpoint_sha256": "61aec3c5a67cc351dbb8a04c0a3ff76de213e01ff387cc349f94e497ce377452",
+      "checkpoint_sha256": "61aec3c5a67cc351dbb8a04c0a3ff76de213e01ff387cc349f94e497ce377452",
+      "initial_state_sha256": "cada74dae61aee26c3423b75463df78d991e4fa504befdae242a7fa570ebb77f"
+    },
+    "notebook_code_sha256": "a35687950ae474ec3a6fbc6db7c6253d3c3e29d5126b4c20fc40a4cc0ccf5219"
+  }
+}

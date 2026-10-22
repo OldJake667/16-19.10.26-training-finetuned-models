@@ -1,5 +1,7 @@
 model,status,epochs_completed,max_epochs,selected_epoch,train_accuracy_selected,validation_accuracy_selected,latest_validation_accuracy,test_accuracy,test_balanced_accuracy,test_macro_f1,total_parameters,run_directory
 cnn_finetuned,completed,15,20,8,0.7437448559670782,0.5196296296296297,0.5171296296296296,0.5043333333333333,0.5042957730500746,0.5041900442561233,4010110,published_results/cnn_finetuned/seed_42_pretrained_finetune_all_layers_epochs_20
-resnet101,in_progress,9,20,,,,0.5319444444444444,,,,42504258,published_results/resnet101/seed_42_pretrained_finetune_all_layers_epochs_20
+resnet101,completed,20,20,19,0.549320987654321,0.5320370370370371,0.5342592592592592,0.531,0.5287931573709477,0.5274230651803501,42504258,published_results/resnet101/seed_42_pretrained_finetune_all_layers_epochs_20
+resnet152,completed,10,10,10,0.5394341563786008,0.5325,0.5325,0.5373333333333333,0.5324249452017559,0.5230021994134897,58147906,published_results/resnet152/seed_42_pretrained_finetune_all_layers_epochs_10
 resnet50,completed,15,20,8,0.5636625514403292,0.5341666666666667,0.5248148148148148,0.5166666666666667,0.5151043847048058,0.5145520554200765,23512130,published_results/resnet50/seed_42_pretrained_finetune_all_layers_epochs_20
 vit_tiny,completed,14,20,7,0.5660493827160494,0.5625925925925926,0.5622222222222222,0.5686666666666667,0.5658381940313846,0.5635762196931677,5426498,published_results/vit_tiny/seed_42_pretrained_finetune_all_layers_epochs_20
+vmamba_base,completed,10,10,9,0.6873045267489712,0.6667592592592593,0.6672222222222223,0.6826666666666666,0.6863903272145853,0.679631567328522,87534850,published_results/vmamba_base/seed_42_pretrained_finetune_all_layers_epochs_10

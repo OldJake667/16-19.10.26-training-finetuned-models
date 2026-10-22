@@ -1,20 +1,22 @@
 # Published fine-tuning results
 
-Snapshot: 2026-10-19T00:43:01.215905+00:00
+Snapshot: 2026-10-22T21:56:54.819480+00:00
 
-Each completed row reports the checkpoint selected by minimum validation loss. An in-progress row has no final test score. These are single-seed runs (seed 42); no result is inferred from a partial run.
+Completed rows evaluate the checkpoint selected by minimum validation loss. In-progress snapshots have no final test score. These are single-seed runs (seed 42).
 
 | Model | Status | Epochs | Selected epoch | Train | Validation | Test |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 | [CNN fine-tuned (EfficientNet-B0)](cnn_finetuned/seed_42_pretrained_finetune_all_layers_epochs_20) | completed | 15/20 | 8 | 74.37% | 51.96% | 50.43% |
-| [ResNet101](resnet101/seed_42_pretrained_finetune_all_layers_epochs_20) | in progress | 9/20 | — | — | — | — |
+| [ResNet101](resnet101/seed_42_pretrained_finetune_all_layers_epochs_20) | completed | 20/20 | 19 | 54.93% | 53.20% | 53.10% |
+| [ResNet152](resnet152/seed_42_pretrained_finetune_all_layers_epochs_10) | completed | 10/10 | 10 | 53.94% | 53.25% | 53.73% |
 | [ResNet50](resnet50/seed_42_pretrained_finetune_all_layers_epochs_20) | completed | 15/20 | 8 | 56.37% | 53.42% | 51.67% |
 | [ViT-Tiny](vit_tiny/seed_42_pretrained_finetune_all_layers_epochs_20) | completed | 14/20 | 7 | 56.60% | 56.26% | 56.87% |
+| [VMamba-Base](vmamba_base/seed_42_pretrained_finetune_all_layers_epochs_10) | completed | 10/10 | 9 | 68.73% | 66.68% | 68.27% |
 
 ## Included files
 
-Run configuration and initialization provenance, history (JSON/CSV), training/validation curves, environment metadata, and snapshot status are included for every published run. Completed runs additionally include selected-checkpoint metrics, the completion marker, test metrics/predictions, and the test confusion matrix. The CSV summary also records balanced accuracy and macro-F1.
+Every run includes its configuration, initialization provenance, history (JSON/CSV), training/validation curves, environment metadata, and snapshot status. Completed runs also include selected-checkpoint metrics, test predictions, test metrics, and the confusion matrix. Balanced accuracy and macro-F1 are recorded in the summaries.
 
-Checkpoints, ImageNet weights, dataset arrays, and full training/validation prediction CSVs remain local. Run-directory names retain the original epoch budget for checkpoint compatibility; the history and status report actual completed epochs.
+Where a self-contained notebook has saved execution outputs, its exact saved copy is included in that run directory. These copies document completed execution and are for viewing; use the clean notebooks in `../standalone_notebooks/` to start a run. Older helper-based wrappers are not published.
 
-In-progress files are a consistent snapshot of saved completed epochs. They do not update automatically when training continues. Plots are rendered from the captured history without running inference or training.
+Plots are rendered from the captured history without inference or training. Checkpoints, pretrained weights, raw data, and full training/validation prediction CSVs remain local. Run directory names retain their original configured epoch budgets; histories record actual completed epochs. Snapshots update only when explicitly published.
