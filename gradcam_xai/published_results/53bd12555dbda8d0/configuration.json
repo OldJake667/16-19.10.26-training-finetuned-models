@@ -1,0 +1,29 @@
+{
+  "method": "Grad-CAM: ReLU(sum_k(mean_spatial(d logit_c / d A_k) * A_k))",
+  "models": [
+    "cnn",
+    "vit_tiny",
+    "dinov2",
+    "vmamba"
+  ],
+  "device": "cpu",
+  "versions": {
+    "torch": "2.8.0",
+    "torchvision": "0.23.0",
+    "timm": "1.0.20",
+    "numpy": "1.26.4",
+    "Pillow": "11.3.0",
+    "matplotlib": "3.9.2"
+  },
+  "expected_inputs_sha256": "041841f7cb25d21fa609fea24bf9eff2aa9dbe2e2ad0af7f5ac95724e601dd7f",
+  "workflow_sha256": null,
+  "dataset": "original bandwidth; 176 training / 45 validation / 0 independent test",
+  "selection": "all current misclassifications; both directions; no confidence filtering",
+  "allow_vmamba_cpu_reference": true,
+  "class_names": {
+    "0": "Low",
+    "1": "High"
+  },
+  "parameters_updated": false,
+  "threads": 4
+}

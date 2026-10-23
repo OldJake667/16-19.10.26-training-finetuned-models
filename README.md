@@ -8,11 +8,12 @@ Nine models initialized with published ImageNet weights and trained on the same 
 | --- | --- |
 | [`standalone_notebooks/`](standalone_notebooks) | One environment check and nine complete, self-contained model notebooks |
 | [`published_results/`](published_results) | Saved metrics, learning curves, test predictions, and completed/in-progress status |
+| [`gradcam_xai/`](gradcam_xai) | Executed Grad-CAM notebook, six error cases, maps, and verification on the original bandwidth dataset |
 | [`verification/`](verification) | Notebook verification reports, dataset provenance, and upload manifest |
 | [`licenses/`](licenses) | Attribution for the embedded VMamba implementation |
 | `requirements.txt`, `start_jupyter.sh` | Dependencies and optional Jupyter launcher |
 
-Only the self-contained notebooks are published. Older wrappers, archived notebook variants, preparation helpers, environments, datasets, and weight files remain outside the published repository.
+RDN training uses the self-contained notebooks. The separate Grad-CAM workflow uses the original bandwidth XAI package and its existing checkpoints. Older training wrappers, environments, full datasets, and weight files remain outside the published repository.
 
 ## Models and settings
 
@@ -53,6 +54,8 @@ See the [results table](published_results/README.md), [CSV summary](published_re
 Six fine-tuning runs are complete: CNN fine-tuned, ViT-Tiny, ResNet50, ResNet101, ResNet152, and VMamba-Base. ViT-Small, ViT-Base, and ViT-Large are prepared; no completed results are claimed for them. Saved execution outputs from the self-contained ResNet101, ResNet152, and VMamba-Base notebooks are included with their run artifacts. Histories and result snapshots update when explicitly published, rather than automatically during training.
 
 ## Run in Jupyter
+
+For the original bandwidth error analysis, see the [Grad-CAM notebook and results](gradcam_xai/README.md). This uses CNN, ViT-Tiny, DINOv2 and VMamba-Tiny on the original 176/45 split; it is separate from the RDN fine-tuning results above.
 
 On the configured computer:
 

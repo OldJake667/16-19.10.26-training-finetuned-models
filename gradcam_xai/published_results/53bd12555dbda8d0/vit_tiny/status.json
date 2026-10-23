@@ -1,0 +1,12 @@
+{
+  "model": "vit_tiny",
+  "audited_images": 45,
+  "correct": 43,
+  "false_high_count": 2,
+  "false_low_count": 0,
+  "maximum_probability_drift": 4.470348358154297e-07,
+  "target_layer": "blocks.11.norm1 (before final attention)",
+  "layout": "tokens",
+  "vmamba_backend": null,
+  "weights_unchanged": true
+}

@@ -1,0 +1,49 @@
+{
+  "all_four_original_checkpoints_loaded": true,
+  "real_validation_images_audited": 180,
+  "archived_class_predictions_reproduced": true,
+  "maximum_probability_drift": 5.7220458984375e-06,
+  "actual_gradcam_cases": 6,
+  "unique_error_images": 3,
+  "false_high_cases": 6,
+  "false_low_cases": 0,
+  "native_grid_shapes": {
+    "cnn": [
+      60,
+      60
+    ],
+    "vit_tiny": [
+      14,
+      14
+    ],
+    "dinov2": [
+      16,
+      16
+    ],
+    "vmamba": [
+      7,
+      7
+    ]
+  },
+  "empty_high_positive_maps": [
+    [
+      "vit_tiny",
+      "M323_log-20241114-212937.bmp"
+    ],
+    [
+      "vit_tiny",
+      "M93_log-20241114-212937.bmp"
+    ]
+  ],
+  "weights_unchanged": true,
+  "hook_logit_difference_all_cases": 0,
+  "notebook_executed_in_jupyter_kernel": true,
+  "notebook_error_outputs": 0,
+  "synthetic_checks_passed": 5,
+  "notebook_code_cells_sha256": "4de818e1924c5fa12ac9f63f588468dcb40de0ff2f9d3ab0076a4d83597ba843",
+  "workflow_sha256": "d1d004c69024d7bbf73695b5fc7f984e7f91fcabcdb47aea3d171a852cb0ec75",
+  "vmamba_execution": "PyTorch CPU reference selective scan; all 45 class predictions reproduced",
+  "cuda_gradcam_tested": false,
+  "model_training_performed": false,
+  "result_directory": "/Users/olzh/Documents/16-19.10.26-training-finetuned-models/gradcam_xai/results/53bd12555dbda8d0"
+}

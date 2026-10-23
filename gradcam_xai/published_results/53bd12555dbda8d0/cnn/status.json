@@ -1,0 +1,12 @@
+{
+  "model": "cnn",
+  "audited_images": 45,
+  "correct": 44,
+  "false_high_count": 1,
+  "false_low_count": 0,
+  "maximum_probability_drift": 1.7881393432617188e-07,
+  "target_layer": "features.6 (last convolution)",
+  "layout": "bchw",
+  "vmamba_backend": null,
+  "weights_unchanged": true
+}

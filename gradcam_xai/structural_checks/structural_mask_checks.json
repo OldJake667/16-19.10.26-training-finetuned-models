@@ -1,0 +1,62 @@
+{
+  "method": "matched black-pixel-count white masking",
+  "model_weights_updated": false,
+  "cases": [
+    {
+      "sample": "M93",
+      "model": "DINOv2 original frozen pretrained backbone; trained two-class head",
+      "true_label": 0,
+      "predicted_label": 1,
+      "baseline_probability_high": 0.944605827331543,
+      "mask_upper_right_pronged_branch_probability_high": 0.9228475689888,
+      "mask_lower_left_branch_control_probability_high": 0.953549325466156,
+      "masked_black_pixels_each": 9843,
+      "whole_image_pixels": 585200,
+      "global_mean_after_target_mask": 198.18885850991114,
+      "global_mean_after_control_mask": 198.18885850991114,
+      "target_slic_segment": 20,
+      "target_slic_coefficient": 0.1921103447675705,
+      "target_roi_bbox_xyxy": [
+        606,
+        135,
+        770,
+        271
+      ],
+      "control_definition": "Nearest black pixels to (20% width,85% height), within x=2..45%, y=70..97%; same number of black pixels whitened",
+      "scope": "local classifier response to white masking; not an electromagnetic simulation or causal proof of true bandwidth",
+      "mask_arrays": "structural_controls/M93_masks.npz",
+      "original_image": "structural_controls/M93_original.png",
+      "original_image_sha256": "8af3cc454eb12bcd4c14696d2b856cd2b5974bda882e1907cb9c95a2475430fa"
+    },
+    {
+      "sample": "M95",
+      "model": "DINOv2 original frozen pretrained backbone; trained two-class head",
+      "true_label": 0,
+      "predicted_label": 1,
+      "baseline_probability_high": 0.5586767792701721,
+      "mask_upper_right_pronged_branch_probability_high": 0.2937825322151184,
+      "mask_lower_left_branch_control_probability_high": 0.3692110478878021,
+      "masked_black_pixels_each": 9512,
+      "whole_image_pixels": 585200,
+      "global_mean_after_target_mask": 219.25293916609706,
+      "global_mean_after_control_mask": 219.25293916609706,
+      "target_slic_segment": 21,
+      "target_slic_coefficient": 0.18784372508525848,
+      "target_roi_bbox_xyxy": [
+        628,
+        149,
+        770,
+        269
+      ],
+      "control_definition": "Nearest black pixels to (20% width,85% height), within x=2..45%, y=70..97%; same number of black pixels whitened",
+      "scope": "local classifier response to white masking; not an electromagnetic simulation or causal proof of true bandwidth",
+      "mask_arrays": "structural_controls/M95_masks.npz",
+      "original_image": "structural_controls/M95_original.png",
+      "original_image_sha256": "57b7539e9a202f5008882e57566d9583514d93222255ce182ded097250d4b1b7"
+    }
+  ],
+  "checkpoint_sha256": "ae4bfb5d3a6f583254059ab62b0d07baea78d069ec079e76e69dd2435ec9b153",
+  "model_backbone": "vit_small_patch14_dinov2.lvd142m",
+  "preprocessing": "Original Predictor.tensor: grayscale to RGB, 224x224 resize, ImageNet normalization",
+  "physical_bandwidth_simulated": false
+}

@@ -1,0 +1,12 @@
+{
+  "model": "vmamba",
+  "audited_images": 45,
+  "correct": 44,
+  "false_high_count": 1,
+  "false_low_count": 0,
+  "maximum_probability_drift": 1.2516975402832031e-06,
+  "target_layer": "backbone.classifier.norm (before spatial pooling)",
+  "layout": "bchw",
+  "vmamba_backend": "PyTorch CPU reference",
+  "weights_unchanged": true
+}
